@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <radialGradient id="bg" cx="30%" cy="20%" r="95%">
+      <stop offset="0" stop-color="#5a1f15"/>
+      <stop offset=".55" stop-color="#2a100d"/>
+      <stop offset="1" stop-color="#170806"/>
+    </radialGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f8e7b0"/>
+      <stop offset=".45" stop-color="#e0b65a"/>
+      <stop offset=".7" stop-color="#a77a2a"/>
+      <stop offset="1" stop-color="#f0d58a"/>
+    </linearGradient>
+    <linearGradient id="red" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#d4532f"/>
+      <stop offset="1" stop-color="#7a1f12"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" fill="url(#bg)"/>
+  <rect x="34" y="34" width="444" height="444" rx="28" fill="none" stroke="#e0b65a" stroke-opacity=".45" stroke-width="4"/>
+  <g transform="translate(-29 9)">
+    <path fill="#000" fill-opacity=".45" transform="translate(6 14)" d="M156 176 L228 176 C236 176 236 160 228 150 A32 32 0 1 1 284 150 C276 160 276 176 284 176 L356 176 L356 248 C356 256 372 256 382 248 A32 32 0 1 1 382 304 C372 296 356 296 356 304 L356 376 L156 376 L156 304 C156 296 172 296 182 304 A32 32 0 1 0 182 248 C172 256 156 256 156 248 Z"/>
+    <path fill="url(#gold)" stroke="#f8e7b0" stroke-width="4" stroke-linejoin="round" d="M156 176 L228 176 C236 176 236 160 228 150 A32 32 0 1 1 284 150 C276 160 276 176 284 176 L356 176 L356 248 C356 256 372 256 382 248 A32 32 0 1 1 382 304 C372 296 356 296 356 304 L356 376 L156 376 L156 304 C156 296 172 296 182 304 A32 32 0 1 0 182 248 C172 256 156 256 156 248 Z"/>
+  </g>
+</svg>
