@@ -22,7 +22,19 @@ export default defineConfig({
         ],
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,woff2,png,svg,webp}'],
+        // Precache the app shell and photo thumbnails only, so updates install in seconds.
+        // Full-size photos are cached the first time a puzzle opens them.
+        globPatterns: ['**/*.{js,css,html,woff2,png,svg}', 'photos/*-t.webp'],
+        runtimeCaching: [
+          {
+            urlPattern: ({ url }) => url.pathname.startsWith('/photos/') && url.pathname.endsWith('.webp'),
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'photos',
+              expiration: { maxEntries: 80 },
+            },
+          },
+        ],
       },
     }),
   ],
