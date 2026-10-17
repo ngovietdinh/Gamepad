@@ -20,7 +20,9 @@ import {
 } from './levels';
 import { Router, View } from './router';
 import { hashString } from '../core/rng';
-import { PHOTOS, PHOTO_SIZES, creditLine, loadImage, photoId, photoUrl } from '../photos/photos';
+import { PHOTOS, PHOTO_SIZES, Photo, creditLine, cutoutUrl, loadImage, loadShape, photoId, photoUrl, shapedBoard } from '../photos/photos';
+import { Polys, planShaped } from '../jigsaw/shape';
+import { CellLayout } from '../jigsaw/engine';
 
 function tool(icon: IconName, label: string, onClick: (btn: HTMLButtonElement) => void, pressed?: boolean) {
   const b = h('button', {
@@ -76,6 +78,17 @@ function shell(router: Router, title: string, sub: HTMLElement, tools: HTMLEleme
 /* Jigsaw                                                              */
 /* ------------------------------------------------------------------ */
 
+interface LoadedArt {
+  art: (widthPx: number) => HTMLCanvasElement;
+  /** Shaped puzzles pick their own grid and board size once the silhouette is known. */
+  cols?: number;
+  rows?: number;
+  boardW?: number;
+  boardH?: number;
+  shape?: Polys;
+  layout?: CellLayout;
+}
+
 interface JigsawRun {
   title: string;
   cols: number;
@@ -87,14 +100,14 @@ interface JigsawRun {
   back: string;
   replay: string;
   next?: string;
-  /** Resolves to a renderer for the picture once it is ready (photos load from the network cache). */
-  load: () => Promise<(widthPx: number) => HTMLCanvasElement>;
+  /** Resolves once the picture is ready (photos load from the network cache). */
+  load: () => Promise<LoadedArt>;
   /** Picture shown on the result card. */
   resultArt: () => HTMLElement;
 }
 
 function runJigsaw(router: Router, run: JigsawRun): View {
-  const total = run.cols * run.rows;
+  let total = run.cols * run.rows;
   const timeEl = h('b', {}, '00:00');
   const countEl = h('b', {}, `0/${total}`);
   const sub = h('div', { class: 'sub' }, h('span', {}, timeEl), h('span', {}, countEl, ' mảnh'), run.rotation ? h('span', {}, 'Chạm để xoay') : null);
@@ -131,12 +144,24 @@ function runJigsaw(router: Router, run: JigsawRun): View {
 
   run
     .load()
-    .then((art) => {
+    .then((loaded) => {
       if (destroyed) return;
       loading.remove();
+      const cols = loaded.cols ?? run.cols;
+      const rows = loaded.rows ?? run.rows;
       scene = new JigsawScene(
         ui.host,
-        { art, cols: run.cols, rows: run.rows, rotation: run.rotation, seed: run.seed },
+        {
+          art: loaded.art,
+          cols,
+          rows,
+          rotation: run.rotation,
+          seed: run.seed,
+          boardW: loaded.boardW,
+          boardH: loaded.boardH,
+          shape: loaded.shape,
+          layout: loaded.layout,
+        },
         {
           progress(locked, n) {
             countEl.textContent = `${locked}/${n}`;
@@ -144,7 +169,7 @@ function runJigsaw(router: Router, run: JigsawRun): View {
           },
           complete({ ms, hints }) {
             finished = true;
-            const stars = starsFor(ms, hints, run.par);
+            const stars = starsFor(ms, hints, run.par * (total / (run.cols * run.rows)));
             const newBest = store.complete(run.recordId, stars, ms);
             openResult({
               title: run.title,
@@ -162,6 +187,8 @@ function runJigsaw(router: Router, run: JigsawRun): View {
           },
         },
       );
+      total = scene.engine.pieces.length;
+      countEl.textContent = `0/${total}`;
       if (import.meta.env.DEV) (window as unknown as { __scene: unknown }).__scene = scene;
     })
     .catch(() => {
@@ -190,7 +217,7 @@ export function jigsawPlay(router: Router, params: string[]): View | HTMLElement
   const painting = PAINTINGS.find((p) => p.id === params[0]);
   const def = JIGSAW_LEVELS[Number(params[1])];
   if (!painting || !def || !jigsawUnlocked(painting, def.index)) {
-    router.go('/jigsaw');
+    router.go('/jigsaw/lacquer');
     return h('div');
   }
   const nextDef = JIGSAW_LEVELS[def.index + 1];
@@ -203,10 +230,10 @@ export function jigsawPlay(router: Router, params: string[]): View | HTMLElement
     seed: jigsawSeed(painting, def.index),
     recordId: jigsawId(painting, def.index),
     par: jigsawPar(def),
-    back: '/jigsaw',
+    back: '/jigsaw/lacquer',
     replay: `/play/jigsaw/${painting.id}/${def.index}`,
     next: nextDef ? `/play/jigsaw/${painting.id}/${nextDef.index}` : nextPainting ? `/play/jigsaw/${nextPainting.id}/0` : undefined,
-    load: async () => (w) => renderPainting(painting, w),
+    load: async () => ({ art: (w) => renderPainting(painting, w) }),
     resultArt: () => canvasCopy(renderPainting(painting, 936), 936, 702),
   });
 }
@@ -215,33 +242,82 @@ export function photoPlay(router: Router, params: string[]): View | HTMLElement 
   const photo = PHOTOS.find((p) => p.id === params[0]);
   const size = PHOTO_SIZES.find((s) => s.cols * s.rows === Number(params[1]));
   const rotation = params[2] === '1';
+  const shaped = params[3] === '1' && !!photo?.shape;
   if (!photo || !size) {
-    router.go('/jigsaw/photos');
+    router.go('/jigsaw');
     return h('div');
   }
+  const n = size.cols * size.rows;
+  const route = (p: Photo) => `/play/photo/${p.id}/${n}/${rotation ? 1 : 0}/${shaped ? 1 : 0}`;
   let img: HTMLImageElement | null = null;
+  let board: { polys: Polys; boardW: number; boardH: number } | null = null;
   const nextPhoto = PHOTOS[PHOTOS.indexOf(photo) + 1];
   return runJigsaw(router, {
     title: photo.name,
     cols: size.cols,
     rows: size.rows,
     rotation,
-    seed: hashString(`${photo.id}#${size.cols}x${size.rows}#${rotation}`),
-    recordId: photoId(photo, size, rotation),
+    seed: hashString(`${photo.id}#${size.cols}x${size.rows}#${rotation}#${shaped}`),
+    recordId: photoId(photo, size, rotation, shaped),
     par: jigsawPar({ index: 0, cols: size.cols, rows: size.rows, rotation }),
-    back: '/jigsaw/photos',
-    replay: `/play/photo/${photo.id}/${size.cols * size.rows}/${rotation ? 1 : 0}`,
-    next: nextPhoto ? `/play/photo/${nextPhoto.id}/${size.cols * size.rows}/${rotation ? 1 : 0}` : undefined,
+    back: '/jigsaw',
+    replay: route(photo),
+    next: nextPhoto ? route(nextPhoto) : undefined,
     load: async () => {
-      img = await loadImage(photoUrl(photo));
-      const loaded = img;
-      return () => canvasCopy(loaded, loaded.naturalWidth, loaded.naturalHeight);
+      if (!shaped) {
+        img = await loadImage(photoUrl(photo));
+        const loaded = img;
+        return { art: () => canvasCopy(loaded, loaded.naturalWidth, loaded.naturalHeight) };
+      }
+      const [shape, cut] = await Promise.all([loadShape(photo), loadImage(cutoutUrl(photo))]);
+      img = cut;
+      const b = shapedBoard(shape);
+      board = b;
+      const plan = planShaped(b.polys, b.boardW, b.boardH, n);
+      return {
+        art: () => canvasCopy(cut, cut.naturalWidth, cut.naturalHeight),
+        cols: plan.cols,
+        rows: plan.rows,
+        boardW: b.boardW,
+        boardH: b.boardH,
+        shape: b.polys,
+        layout: plan.layout,
+      };
     },
     resultArt: () => {
-      const wrap = h('div', { class: 'credit-art' }, canvasCopy(img!, 936, 702), h('div', { class: 'credit' }, creditLine(photo)));
-      return wrap;
+      const art = board ? cutoutCanvas(img!, board.polys, board.boardW, board.boardH, 936) : canvasCopy(img!, 936, 702);
+      return h('div', { class: 'credit-art' }, art, h('div', { class: 'credit' }, creditLine(photo)));
     },
   });
+}
+
+/** The animal alone on the lacquer ground, for the result card. */
+function cutoutCanvas(img: HTMLImageElement, polys: Polys, boardW: number, boardH: number, width: number) {
+  const W = width;
+  const H = Math.round((width * 3) / 4);
+  const c = h('canvas');
+  c.width = W;
+  c.height = H;
+  const ctx = c.getContext('2d')!;
+  ctx.fillStyle = '#1a0806';
+  ctx.fillRect(0, 0, W, H);
+  const scale = Math.min((W * 0.9) / boardW, (H * 0.9) / boardH);
+  ctx.translate((W - boardW * scale) / 2, (H - boardH * scale) / 2);
+  ctx.scale(scale, scale);
+  ctx.beginPath();
+  for (const p of polys) {
+    for (let i = 0; i < p.length; i += 2) (i ? ctx.lineTo(p[i], p[i + 1]) : ctx.moveTo(p[i], p[i + 1]));
+    ctx.closePath();
+  }
+  ctx.save();
+  ctx.shadowColor = 'rgba(0,0,0,0.6)';
+  ctx.shadowBlur = 24 * scale;
+  ctx.fillStyle = '#000';
+  ctx.fill();
+  ctx.restore();
+  ctx.clip();
+  ctx.drawImage(img, 0, 0, boardW, boardH);
+  return c;
 }
 
 /* ------------------------------------------------------------------ */

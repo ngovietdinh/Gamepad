@@ -3,6 +3,7 @@
   "id": "ho",
   "name": "Hổ",
   "group": "thu",
+  "shape": true,
   "credit": {
    "artist": "Hans Stieglitz",
    "license": "CC BY-SA 3.0",
@@ -13,6 +14,7 @@
   "id": "su-tu",
   "name": "Sư tử",
   "group": "thu",
+  "shape": true,
   "credit": {
    "artist": "Giles Laurent",
    "license": "CC BY-SA 4.0",
@@ -23,6 +25,7 @@
   "id": "bao-hoa-mai",
   "name": "Báo hoa mai",
   "group": "thu",
+  "shape": true,
   "credit": {
    "artist": "Giles Laurent",
    "license": "CC BY-SA 4.0",
@@ -33,6 +36,7 @@
   "id": "bao-san",
   "name": "Báo săn",
   "group": "thu",
+  "shape": true,
   "credit": {
    "artist": "Charles J. Sharp",
    "license": "CC BY-SA 4.0",
@@ -43,6 +47,7 @@
   "id": "voi",
   "name": "Voi châu Phi",
   "group": "thu",
+  "shape": true,
   "credit": {
    "artist": "Diego Delso",
    "license": "CC BY-SA 4.0",
@@ -53,6 +58,7 @@
   "id": "huou-cao-co",
   "name": "Hươu cao cổ",
   "group": "thu",
+  "shape": true,
   "credit": {
    "artist": "Byrdyak",
    "license": "CC BY-SA 4.0",
@@ -63,6 +69,7 @@
   "id": "ngua-van",
   "name": "Ngựa vằn",
   "group": "thu",
+  "shape": true,
   "credit": {
    "artist": "Charles J. Sharp",
    "license": "CC BY-SA 4.0",
@@ -73,6 +80,7 @@
   "id": "gau-nau",
   "name": "Gấu nâu",
   "group": "thu",
+  "shape": true,
   "credit": {
    "artist": "Byrdyak",
    "license": "CC BY 4.0",
@@ -83,6 +91,7 @@
   "id": "gau-bac-cuc",
   "name": "Gấu Bắc Cực",
   "group": "thu",
+  "shape": true,
   "credit": {
    "artist": "AWeith",
    "license": "CC BY-SA 4.0",
@@ -93,6 +102,7 @@
   "id": "gau-truc-do",
   "name": "Gấu trúc đỏ",
   "group": "thu",
+  "shape": true,
   "credit": {
    "artist": "Mathias Appel",
    "license": "CC0",
@@ -103,6 +113,7 @@
   "id": "soi",
   "name": "Sói xám",
   "group": "thu",
+  "shape": true,
   "credit": {
    "artist": "Malene Thyssen",
    "license": "CC BY-SA 3.0",
@@ -113,6 +124,7 @@
   "id": "cao-do",
   "name": "Cáo đỏ",
   "group": "thu",
+  "shape": true,
   "credit": {
    "artist": "ClaudiaTen",
    "license": "CC BY-SA 4.0",
@@ -123,6 +135,7 @@
   "id": "khi-dot",
   "name": "Khỉ đột núi",
   "group": "thu",
+  "shape": true,
   "credit": {
    "artist": "Charles J. Sharp",
    "license": "CC BY-SA 4.0",
@@ -133,6 +146,7 @@
   "id": "duoi-uoi",
   "name": "Đười ươi Sumatra",
   "group": "thu",
+  "shape": true,
   "credit": {
    "artist": "H. Zell",
    "license": "CC BY-SA 3.0",
@@ -143,6 +157,7 @@
   "id": "huou-do",
   "name": "Hươu đỏ",
   "group": "thu",
+  "shape": true,
   "credit": {
    "artist": "derivative work: Massimo Catarinella (talk) Red_deer_stag.jpg: Mehmet Karatay",
    "license": "CC BY-SA 3.0",
@@ -153,6 +168,7 @@
   "id": "soc-do",
   "name": "Sóc đỏ",
   "group": "thu",
+  "shape": true,
   "credit": {
    "artist": "Rhododendrites",
    "license": "CC BY-SA 4.0",
@@ -163,6 +179,7 @@
   "id": "te-giac",
   "name": "Tê giác",
   "group": "thu",
+  "shape": true,
   "credit": {
    "artist": "Giles Laurent",
    "license": "CC BY-SA 4.0",
@@ -173,6 +190,7 @@
   "id": "ha-ma",
   "name": "Hà mã",
   "group": "thu",
+  "shape": true,
   "credit": {
    "artist": "William Warby",
    "license": "CC BY 2.0",
@@ -183,6 +201,7 @@
   "id": "cay-meerkat",
   "name": "Cầy meerkat",
   "group": "thu",
+  "shape": true,
   "credit": {
    "artist": "Charles J. Sharp",
    "license": "CC BY-SA 4.0",
@@ -193,6 +212,7 @@
   "id": "gau-koala",
   "name": "Gấu koala",
   "group": "thu",
+  "shape": true,
   "credit": {
    "artist": "Till Niermann",
    "license": "CC BY 3.0",
@@ -203,6 +223,7 @@
   "id": "dai-bang",
   "name": "Đại bàng đầu trắng non",
   "group": "chim",
+  "shape": true,
   "credit": {
    "artist": "Michael Gäbler",
    "license": "CC BY 3.0",
@@ -213,6 +234,7 @@
   "id": "cu-tuyet",
   "name": "Cú tuyết",
   "group": "chim",
+  "shape": true,
   "credit": {
    "artist": "Diego Delso",
    "license": "CC BY-SA 4.0",
@@ -223,6 +245,7 @@
   "id": "boi-ca",
   "name": "Chim bói cá",
   "group": "chim",
+  "shape": true,
   "credit": {
    "artist": "Luca Casale",
    "license": "CC BY-SA 4.0",
@@ -233,6 +256,7 @@
   "id": "hong-hac",
   "name": "Hồng hạc",
   "group": "chim",
+  "shape": true,
   "credit": {
    "artist": "Wilfredor",
    "license": "CC0",
@@ -243,6 +267,7 @@
   "id": "cong",
   "name": "Chim công",
   "group": "chim",
+  "shape": false,
   "credit": {
    "artist": "Jebulon",
    "license": "CC BY-SA 3.0",
@@ -253,6 +278,7 @@
   "id": "vet-macaw",
   "name": "Vẹt đuôi dài",
   "group": "chim",
+  "shape": true,
   "credit": {
    "artist": "Charles J. Sharp",
    "license": "CC BY-SA 4.0",
@@ -263,6 +289,7 @@
   "id": "chim-canh-cut",
   "name": "Chim cánh cụt vua",
   "group": "chim",
+  "shape": true,
   "credit": {
    "artist": "Isiwal",
    "license": "CC BY-SA 4.0",
@@ -273,6 +300,7 @@
   "id": "chim-ruoi",
   "name": "Chim ruồi",
   "group": "chim",
+  "shape": true,
   "credit": {
    "artist": "Charles J. Sharp",
    "license": "CC BY-SA 4.0",
@@ -283,6 +311,7 @@
   "id": "diec-xam",
   "name": "Diệc xám",
   "group": "chim",
+  "shape": true,
   "credit": {
    "artist": "Luc Viatour",
    "license": "CC BY-SA 3.0",
@@ -293,6 +322,7 @@
   "id": "thien-nga",
   "name": "Thiên nga",
   "group": "chim",
+  "shape": true,
   "credit": {
    "artist": "Charles J. Sharp",
    "license": "CC BY-SA 4.0",
@@ -303,6 +333,7 @@
   "id": "chim-toucan",
   "name": "Chim toucan",
   "group": "chim",
+  "shape": true,
   "credit": {
    "artist": "Giles Laurent",
    "license": "CC BY-SA 4.0",
@@ -313,6 +344,7 @@
   "id": "hai-anh",
   "name": "Hải âu cổ rụt",
   "group": "chim",
+  "shape": true,
   "credit": {
    "artist": "Richard Bartz",
    "license": "CC BY-SA 3.0",
@@ -323,6 +355,7 @@
   "id": "tac-ke-hoa",
   "name": "Tắc kè hoa sừng ngắn",
   "group": "bosat",
+  "shape": true,
   "credit": {
    "artist": "Charles J. Sharp",
    "license": "CC BY-SA 4.0",
@@ -333,6 +366,7 @@
   "id": "ca-sau",
   "name": "Cá sấu",
   "group": "bosat",
+  "shape": true,
   "credit": {
    "artist": "Tomas Castelazo",
    "license": "CC0",
@@ -343,6 +377,7 @@
   "id": "rua-bien",
   "name": "Rùa biển xanh",
   "group": "bosat",
+  "shape": true,
   "credit": {
    "artist": "Brocken Inaglory",
    "license": "CC BY-SA 4.0",
@@ -353,6 +388,7 @@
   "id": "ech-mat-do",
   "name": "Ếch cây mắt đỏ",
   "group": "bosat",
+  "shape": true,
   "credit": {
    "artist": "Careyjamesbalboa (Carey James Balboa)",
    "license": "Public domain",
@@ -363,6 +399,7 @@
   "id": "tran-xanh",
   "name": "Trăn cây xanh",
   "group": "bosat",
+  "shape": true,
   "credit": {
    "artist": "JJ Harrison",
    "license": "CC BY-SA 3.0",
@@ -373,6 +410,7 @@
   "id": "ky-nhong",
   "name": "Kỳ nhông",
   "group": "bosat",
+  "shape": true,
   "credit": {
    "artist": "Rjcastillo",
    "license": "CC BY-SA 3.0",
@@ -383,6 +421,7 @@
   "id": "ca-heo",
   "name": "Cá heo",
   "group": "nuoc",
+  "shape": true,
   "credit": {
    "artist": "NASA",
    "license": "Public domain",
@@ -393,6 +432,7 @@
   "id": "ca-voi",
   "name": "Cá voi lưng gù",
   "group": "nuoc",
+  "shape": true,
   "credit": {
    "artist": "Charles J. Sharp",
    "license": "CC BY-SA 4.0",
@@ -403,6 +443,7 @@
   "id": "ca-he",
   "name": "Cá hề",
   "group": "nuoc",
+  "shape": true,
   "credit": {
    "artist": "Nick Hobgood",
    "license": "CC BY-SA 3.0",
@@ -413,6 +454,7 @@
   "id": "sua",
   "name": "Sứa bờm sư tử",
   "group": "nuoc",
+  "shape": true,
   "credit": {
    "artist": "W.carter",
    "license": "CC0",
@@ -423,6 +465,7 @@
   "id": "bach-tuoc",
   "name": "Bạch tuộc",
   "group": "nuoc",
+  "shape": true,
   "credit": {
    "artist": "H. Zell",
    "license": "CC BY-SA 3.0",
@@ -433,6 +476,7 @@
   "id": "hai-cau",
   "name": "Hải cẩu",
   "group": "nuoc",
+  "shape": true,
   "credit": {
    "artist": "AWeith",
    "license": "CC BY-SA 4.0",
@@ -443,6 +487,7 @@
   "id": "rai-ca-bien",
   "name": "Rái cá biển",
   "group": "nuoc",
+  "shape": true,
   "credit": {
    "artist": "Mike Baird from Morro Bay, USA (bairdphotos.com)",
    "license": "CC BY 2.0",
@@ -453,6 +498,7 @@
   "id": "buom",
   "name": "Bướm phượng",
   "group": "contrung",
+  "shape": true,
   "credit": {
    "artist": "Uoaei1",
    "license": "CC BY-SA 4.0",
@@ -463,6 +509,7 @@
   "id": "chuon-chuon",
   "name": "Chuồn chuồn đỏ",
   "group": "contrung",
+  "shape": true,
   "credit": {
    "artist": "André Karwath aka Aka",
    "license": "CC BY-SA 2.5",
@@ -473,6 +520,7 @@
   "id": "bo-rua",
   "name": "Bọ rùa bảy chấm",
   "group": "contrung",
+  "shape": true,
   "credit": {
    "artist": "Stephan Sprinz",
    "license": "CC BY 4.0",
@@ -483,6 +531,7 @@
   "id": "ong-mat",
   "name": "Ong mật",
   "group": "contrung",
+  "shape": false,
   "credit": {
    "artist": "Ivar Leidus",
    "license": "CC BY-SA 4.0",
@@ -493,6 +542,7 @@
   "id": "bo-ngua",
   "name": "Bọ ngựa",
   "group": "contrung",
+  "shape": true,
   "credit": {
    "artist": "Charles J. Sharp",
    "license": "CC BY-SA 4.0",

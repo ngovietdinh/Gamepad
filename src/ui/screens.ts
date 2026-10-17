@@ -21,7 +21,7 @@ import {
 import { Router } from './router';
 import { openSettings } from './dialogs';
 import { sfx } from '../fx/audio';
-import { GROUPS, PHOTOS, PHOTO_SIZES, Photo, PhotoGroup, creditLine, photoBest, photoId, photoUrl, thumbUrl } from '../photos/photos';
+import { GROUPS, PHOTOS, PHOTO_SIZES, Photo, PhotoGroup, creditLine, loadImage, loadShape, photoBest, photoId, photoUrl, thumbUrl } from '../photos/photos';
 
 function stars(n: number) {
   return h('span', { class: 'stars', 'aria-label': `${n} trên 3 sao` }, ...[0, 1, 2].map((i) => h('i', { class: i < n ? 'on' : '' })));
@@ -43,7 +43,7 @@ export function homeScreen(router: Router) {
     h('div', { class: 'home-inner' }, h(
       'header',
       { class: 'home-head' },
-      h('div', {}, h('h1', { class: 'wordmark' }, 'Mảnh Ghép'), h('p', { class: 'lede' }, 'Tranh ghép sơn mài và tangram, làm riêng cho iPad và Apple Pencil.')),
+      h('div', {}, h('h1', { class: 'wordmark' }, 'Mảnh Ghép'), h('p', { class: 'lede' }, 'Ghép ảnh động vật thật theo đúng dáng con vật, tranh sơn mài và tangram, làm riêng cho iPad và Apple Pencil.')),
       h('button', { class: 'icon-btn', 'aria-label': 'Cài đặt', html: icons.settings, onclick: () => openSettings(router) }),
     ),
     h(
@@ -56,8 +56,8 @@ export function homeScreen(router: Router) {
         h(
           'div',
           { class: 'meta' },
-          h('div', {}, h('div', { class: 'name' }, 'Tranh ghép'), h('div', { class: 'desc' }, PHOTOS.length ? `5 bức sơn mài và ${PHOTOS.length} ảnh động vật thật` : '5 bức sơn mài, mỗi bức 6 cấp từ 12 đến 108 mảnh')),
-          h('div', { class: 'count' }, `${jp.done}/${jp.total} màn`),
+          h('div', {}, h('div', { class: 'name' }, 'Tranh ghép'), h('div', { class: 'desc' }, PHOTOS.length ? `${PHOTOS.length} ảnh động vật thật, ghép theo dáng con vật, và 5 tranh sơn mài` : '5 bức sơn mài, mỗi bức 6 cấp từ 12 đến 108 mảnh')),
+          h('div', { class: 'count' }, PHOTOS.length ? `${PHOTOS.filter((p) => photoBest(p).done).length}/${PHOTOS.length} ảnh` : `${jp.done}/${jp.total} màn`),
         ),
       ),
       h(
@@ -75,14 +75,17 @@ export function homeScreen(router: Router) {
   );
 
   requestAnimationFrame(() => {
-    mountJigsawTeaser(jigsawArt);
+    // The home teaser shows a real photo: the red panda, a few pieces lifted out.
+    const teaser = PHOTOS.find((p) => p.id === 'gau-truc-do') ?? PHOTOS[0];
+    if (teaser) loadImage(photoUrl(teaser)).then((img) => mountJigsawTeaser(jigsawArt, img), () => mountJigsawTeaser(jigsawArt));
+    else mountJigsawTeaser(jigsawArt);
     mountTangramTeaser(tangramArt);
   });
   return el;
 }
 
 /** The finished Hạ Long painting with three pieces lifted out; two glide home on load. */
-function mountJigsawTeaser(host: HTMLElement) {
+function mountJigsawTeaser(host: HTMLElement, picture?: HTMLImageElement) {
   const r = host.getBoundingClientRect();
   if (!r.width) return;
   const dpr = Math.min(2, window.devicePixelRatio || 1);
@@ -91,8 +94,16 @@ function mountJigsawTeaser(host: HTMLElement) {
   canvas.height = Math.round(r.height * dpr);
   host.append(canvas);
   const ctx = canvas.getContext('2d')!;
-  const img = renderPainting(PAINTINGS[0], Math.max(r.width, (r.height * 4) / 3) * dpr);
-  // Cover-crop the 4:3 painting into the teaser box.
+  let img: HTMLCanvasElement;
+  if (picture) {
+    img = h('canvas');
+    img.width = picture.naturalWidth;
+    img.height = picture.naturalHeight;
+    img.getContext('2d')!.drawImage(picture, 0, 0);
+  } else {
+    img = renderPainting(PAINTINGS[0], Math.max(r.width, (r.height * 4) / 3) * dpr);
+  }
+  // Cover-crop the 4:3 picture into the teaser box.
   const W0 = canvas.width;
   const H0 = canvas.height;
   const sc = Math.max(W0 / img.width, H0 / img.height);
@@ -367,7 +378,7 @@ export function tangramMenu(router: Router) {
 function jigsawTabs(router: Router, active: 'paint' | 'photo') {
   const tab = (id: 'paint' | 'photo', label: string, path: string) =>
     h('button', { class: 'seg', role: 'tab', 'aria-selected': String(active === id), onclick: () => router.go(path) }, label);
-  return h('div', { class: 'segmented', role: 'tablist' }, tab('paint', 'Tranh sơn mài', '/jigsaw'), tab('photo', `Ảnh động vật`, '/jigsaw/photos'));
+  return h('div', { class: 'segmented', role: 'tablist' }, tab('photo', 'Ảnh động vật', '/jigsaw'), tab('paint', 'Tranh sơn mài', '/jigsaw/lacquer'));
 }
 
 let lastGroup: PhotoGroup | 'all' = 'all';
@@ -424,6 +435,7 @@ export function photosMenu(router: Router) {
 
 let lastSize = 1;
 let lastRotation = false;
+let lastShaped = true;
 
 function openPhotoSheet(router: Router, p: Photo) {
   const close = () => s.remove();
@@ -433,10 +445,48 @@ function openPhotoSheet(router: Router, p: Photo) {
   });
   const sizes = h('div', { class: 'sizes', role: 'radiogroup', 'aria-label': 'Số mảnh' });
   const rot = h('button', { class: 'switch', role: 'switch', 'aria-checked': String(lastRotation), 'aria-label': 'Xoay mảnh' });
+  const canShape = !!p.shape;
+  const shapedOn = () => canShape && lastShaped;
+  const shp = h('button', { class: 'switch', role: 'switch', 'aria-checked': String(shapedOn()), 'aria-label': 'Theo dáng con vật' });
+  const preview = h('img', { src: photoUrl(p), alt: p.name, width: 1600, height: 1200 });
+  const outline = h('canvas', { class: 'shape-outline' });
+  const renderPreview = () => {
+    outline.style.opacity = shapedOn() ? '1' : '0';
+    if (!shapedOn() || outline.dataset.done) return;
+    loadShape(p)
+      .then((shape) => {
+        outline.width = 1200;
+        outline.height = 900;
+        const ctx = outline.getContext('2d')!;
+        ctx.fillStyle = 'rgba(20,6,4,0.78)';
+        ctx.fillRect(0, 0, 1200, 900);
+        const path = new Path2D();
+        for (const poly of shape.polys) {
+          for (let i = 0; i < poly.length; i += 2) (i ? path.lineTo(poly[i], poly[i + 1]) : path.moveTo(poly[i], poly[i + 1]));
+          path.closePath();
+        }
+        ctx.globalCompositeOperation = 'destination-out';
+        ctx.fill(path);
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.strokeStyle = '#f3dc98';
+        ctx.lineWidth = 4;
+        ctx.lineJoin = 'round';
+        ctx.stroke(path);
+        outline.dataset.done = '1';
+      })
+      .catch(() => {});
+  };
+  shp.addEventListener('click', () => {
+    lastShaped = !lastShaped;
+    shp.setAttribute('aria-checked', String(shapedOn()));
+    renderPreview();
+    renderSizes();
+    sfx.ui();
+  });
   const renderSizes = () =>
     sizes.replaceChildren(
       ...PHOTO_SIZES.map((sz, i) => {
-        const rec = store.record(photoId(p, sz, lastRotation));
+        const rec = store.record(photoId(p, sz, lastRotation, shapedOn()));
         return h(
           'button',
           {
@@ -449,7 +499,7 @@ function openPhotoSheet(router: Router, p: Photo) {
               sfx.ui();
             },
           },
-          h('span', { class: 'n' }, sz.cols * sz.rows),
+          h('span', { class: 'n' }, `${shapedOn() ? '≈' : ''}${sz.cols * sz.rows}`),
           h('span', { class: 'unit' }, 'mảnh'),
           rec ? stars(rec.stars) : null,
         );
@@ -462,11 +512,12 @@ function openPhotoSheet(router: Router, p: Photo) {
     sfx.ui();
   });
   renderSizes();
+  renderPreview();
   s.append(
     h(
       'div',
       { class: 'dialog photo-sheet', role: 'dialog', 'aria-label': p.name },
-      h('div', { class: 'art' }, h('img', { src: photoUrl(p), alt: p.name, width: 1600, height: 1200 })),
+      h('div', { class: 'art shape-preview' }, preview, outline),
       h(
         'div',
         { class: 'topbar', style: 'margin-bottom:4px' },
@@ -475,6 +526,9 @@ function openPhotoSheet(router: Router, p: Photo) {
       ),
       h('a', { class: 'credit', href: p.credit.source, target: '_blank', rel: 'noopener' }, creditLine(p)),
       sizes,
+      canShape
+        ? h('div', { class: 'setting' }, h('div', {}, h('div', { class: 't' }, 'Theo dáng con vật'), h('div', { class: 'd' }, 'Chỉ ghép con vật, mép bàn chạy theo đường viền')), shp)
+        : null,
       h('div', { class: 'setting' }, h('div', {}, h('div', { class: 't' }, 'Xoay mảnh'), h('div', { class: 'd' }, 'Mảnh bị xoay ngẫu nhiên, chạm để xoay lại')), rot),
       h(
         'div',
@@ -486,7 +540,7 @@ function openPhotoSheet(router: Router, p: Photo) {
             onclick: () => {
               close();
               const sz = PHOTO_SIZES[lastSize];
-              router.go(`/play/photo/${p.id}/${sz.cols * sz.rows}/${lastRotation ? 1 : 0}`);
+              router.go(`/play/photo/${p.id}/${sz.cols * sz.rows}/${lastRotation ? 1 : 0}/${shapedOn() ? 1 : 0}`);
             },
           },
           'Bắt đầu ghép',

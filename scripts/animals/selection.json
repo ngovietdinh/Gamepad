@@ -147,7 +147,8 @@
   "id": "cong",
   "name": "Chim công",
   "group": "chim",
-  "title": "File:Paonroue.JPG"
+  "title": "File:Paonroue.JPG",
+  "shape": false
  },
  {
   "id": "vet-macaw",
@@ -291,7 +292,8 @@
   "id": "ong-mat",
   "name": "Ong mật",
   "group": "contrung",
-  "title": "File:Apis mellifera - Senecio paludosus - Keila.jpg"
+  "title": "File:Apis mellifera - Senecio paludosus - Keila.jpg",
+  "shape": false
  },
  {
   "id": "bo-ngua",

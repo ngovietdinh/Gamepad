@@ -9,10 +9,10 @@ document.documentElement.classList.toggle('reduce-motion', store.settings.reduce
 
 const router = new Router(document.getElementById('app')!, [
   [/^\/$/, (r) => homeScreen(r)],
-  [/^\/jigsaw$/, (r) => jigsawMenu(r)],
-  [/^\/jigsaw\/photos$/, (r) => photosMenu(r)],
+  [/^\/jigsaw$/, (r) => photosMenu(r)],
+  [/^\/jigsaw\/lacquer$/, (r) => jigsawMenu(r)],
   [/^\/tangram$/, (r) => tangramMenu(r)],
-  [/^\/play\/photo\/([\w-]+)\/(\d+)\/([01])$/, (r, p) => photoPlay(r, p)],
+  [/^\/play\/photo\/([\w-]+)\/(\d+)\/([01])(?:\/([01]))?$/, (r, p) => photoPlay(r, p)],
   [/^\/play\/jigsaw\/([\w-]+)\/(\d)$/, (r, p) => jigsawPlay(r, p)],
   [/^\/play\/tangram\/([\w-]+)$/, (r, p) => tangramPlay(r, p)],
 ]);

@@ -6,11 +6,18 @@ import { store } from '../core/store';
 import { sfx } from '../fx/audio';
 import { Particles } from '../fx/particles';
 import { KNOB_REACH, applyPath, pieceOutline } from './cut';
-import { Group, JigsawEngine, Piece } from './engine';
+import { CellLayout, Group, JigsawEngine, Piece } from './engine';
+import { Polys } from './shape';
 
 export interface JigsawLevel {
-  /** Renders the picture at (about) the given pixel width; 4:3. */
+  /** Renders the picture at (about) the given pixel width, in the board's aspect. */
   art: (widthPx: number) => HTMLCanvasElement;
+  /** Board size in world units (default 1200×900). */
+  boardW?: number;
+  boardH?: number;
+  /** Silhouette outline in board units: the board takes the animal's shape. */
+  shape?: Polys;
+  layout?: CellLayout;
   cols: number;
   rows: number;
   rotation: boolean;
@@ -22,8 +29,6 @@ export interface JigsawCallbacks {
   complete(stats: { ms: number; hints: number }): void;
 }
 
-const BOARD_W = 1200;
-const BOARD_H = 900;
 const QUARTER = Math.PI / 2;
 
 interface Sprite {
@@ -66,6 +71,16 @@ export class JigsawScene implements InputHandler {
   private boardLayer!: HTMLCanvasElement;
   private boardDirty = true;
   private hitCtx = document.createElement('canvas').getContext('2d')!;
+  /** Silhouette in board units, or null for a rectangular board. */
+  private shapePath: Path2D | null = null;
+
+  private get bw() {
+    return this.level.boardW ?? 1200;
+  }
+
+  private get bh() {
+    return this.level.boardH ?? 900;
+  }
 
   private drag: Drag | null = null;
   private hoverState: { piece: Piece | null; pos: Vec } | null = null;
@@ -101,11 +116,22 @@ export class JigsawScene implements InputHandler {
     this.engine = new JigsawEngine({
       cols: level.cols,
       rows: level.rows,
-      boardW: BOARD_W,
-      boardH: BOARD_H,
+      boardW: level.boardW ?? 1200,
+      boardH: level.boardH ?? 900,
       rotation: level.rotation,
       rng: makeRng(level.seed),
+      layout: level.layout,
     });
+    if (level.shape) {
+      this.shapePath = new Path2D();
+      for (const poly of level.shape) {
+        for (let i = 0; i < poly.length; i += 2) {
+          if (i) this.shapePath.lineTo(poly[i], poly[i + 1]);
+          else this.shapePath.moveTo(poly[i], poly[i + 1]);
+        }
+        this.shapePath.closePath();
+      }
+    }
     this.canvas = document.createElement('canvas');
     this.canvas.className = 'stage';
     host.appendChild(this.canvas);
@@ -157,7 +183,7 @@ export class JigsawScene implements InputHandler {
 
   fit() {
     const t = this.engine.table;
-    const world = t.w ? t : { x: -150, y: -150, w: BOARD_W + 300, h: BOARD_H + 300 };
+    const world = t.w ? t : { x: -150, y: -150, w: this.bw + 300, h: this.bh + 300 };
     this.cam.fit(world, { w: this.cssW, h: this.cssH }, this.insets);
     this.dirty = true;
   }
@@ -168,15 +194,15 @@ export class JigsawScene implements InputHandler {
     const targets = e.scatter(makeRng(this.level.seed + 1), this.viewAspect, this.level.rotation);
     this.fit();
     // Sprite resolution: sharp at 2x zoom on a retina screen, capped for memory.
-    this.res = clamp(this.cam.zoom * this.dpr * 1.8, 1, 2400 / BOARD_W);
-    this.image = this.level.art(BOARD_W * this.res);
+    this.res = clamp(this.cam.zoom * this.dpr * 1.8, 1, 2400 / this.bw);
+    this.image = this.level.art(this.bw * this.res);
     const s = Math.min(e.pw, e.ph);
     this.pad = s * KNOB_REACH + 3;
     this.shadowPad = this.pad + s * 0.12;
     for (const p of e.pieces) this.sprites[p.id] = this.bake(p);
     this.boardLayer = document.createElement('canvas');
-    this.boardLayer.width = Math.round(BOARD_W * this.res);
-    this.boardLayer.height = Math.round(BOARD_H * this.res);
+    this.boardLayer.width = Math.round(this.bw * this.res);
+    this.boardLayer.height = Math.round(this.bh * this.res);
     // Save scatter targets for the intro.
     this.introTargets = targets;
   }
@@ -199,20 +225,25 @@ export class JigsawScene implements InputHandler {
     c.setTransform(res, 0, 0, res, this.pad * res, this.pad * res);
     c.save();
     c.clip(path);
-    c.drawImage(this.image, -p.col * e.pw, -p.row * e.ph, BOARD_W, BOARD_H);
+    // On a silhouette board the piece is also cut along the animal's outline.
+    const local = this.localShape(p);
+    if (local) c.clip(local);
+    c.drawImage(this.image, -p.col * e.pw, -p.row * e.ph, this.bw, this.bh);
     // Bevel: light from top-left, shade bottom-right, drawn inside the clip.
     const bevel = Math.max(1.2, Math.min(e.pw, e.ph) * 0.02);
+    const edges = local ? [path, local] : [path];
     c.lineWidth = bevel * 2;
     c.translate(-bevel * 0.6, -bevel * 0.6);
     c.strokeStyle = 'rgba(30,8,4,0.55)';
-    c.stroke(path);
+    for (const q of edges) c.stroke(q);
     c.translate(bevel * 1.2, bevel * 1.2);
     c.strokeStyle = 'rgba(255,238,200,0.45)';
-    c.stroke(path);
-    c.restore();
-    c.lineWidth = 0.8;
+    for (const q of edges) c.stroke(q);
+    c.translate(-bevel * 0.6, -bevel * 0.6);
+    c.lineWidth = local ? 1.6 : 0.8;
     c.strokeStyle = 'rgba(20,6,3,0.5)';
-    c.stroke(path);
+    for (const q of edges) c.stroke(q);
+    c.restore();
 
     const sw = e.pw + this.shadowPad * 2;
     const sh = e.ph + this.shadowPad * 2;
@@ -226,9 +257,25 @@ export class JigsawScene implements InputHandler {
     sc.shadowColor = 'rgba(10,2,0,0.6)';
     sc.shadowBlur = Math.min(e.pw, e.ph) * 0.06 * sr;
     sc.shadowOffsetX = far;
-    sc.fillStyle = '#000';
-    sc.fill(path);
+    // The shadow follows the baked piece's own alpha, so silhouette cuts cast it too.
+    sc.drawImage(img, -this.pad, -this.pad, w, h);
     return { img, shadow, path };
+  }
+
+  /** The silhouette in a piece's cell frame (top-left of its cell at 0,0). */
+  private localShape(p: Piece): Path2D | null {
+    if (!this.shapePath) return null;
+    const e = this.engine;
+    const m = new DOMMatrix().translate(-p.col * e.pw, -p.row * e.ph);
+    const out = new Path2D();
+    out.addPath(this.shapePath, m);
+    return out;
+  }
+
+  /** Limits drawing to the silhouette while in a piece's cell frame. */
+  private clipToShape(ctx: CanvasRenderingContext2D, p: Piece) {
+    const local = this.localShape(p);
+    if (local) ctx.clip(local);
   }
 
   private startIntro() {
@@ -298,7 +345,14 @@ export class JigsawScene implements InputHandler {
   private hitPiece = (p: Piece, local: Vec) => {
     const e = this.engine;
     if (local.x < -this.pad || local.y < -this.pad || local.x > e.pw + this.pad || local.y > e.ph + this.pad) return false;
-    return this.hitCtx.isPointInPath(this.sprites[p.id].path, local.x, local.y);
+    if (!this.hitCtx.isPointInPath(this.sprites[p.id].path, local.x, local.y)) return false;
+    if (!this.shapePath) return true;
+    // Fingers get a little slack around thin parts of the silhouette (legs, tails).
+    const bx = local.x + p.col * e.pw;
+    const by = local.y + p.row * e.ph;
+    if (this.hitCtx.isPointInPath(this.shapePath, bx, by)) return true;
+    const slack = Math.min(e.pw, e.ph) * 0.12;
+    return [[slack, 0], [-slack, 0], [0, slack], [0, -slack]].some(([dx, dy]) => this.hitCtx.isPointInPath(this.shapePath!, bx + dx, by + dy));
   };
 
   private grabFilter = (g: Group) => !this.edgeOnly || g.pieces.some((p) => p.edge);
@@ -461,11 +515,11 @@ export class JigsawScene implements InputHandler {
     this.finale = 0;
     // Glide the camera in so the finished painting fills the screen.
     const target = new Camera();
-    target.fit({ x: -30, y: -30, w: BOARD_W + 60, h: BOARD_H + 60 }, { w: this.cssW, h: this.cssH }, this.insets);
+    target.fit({ x: -30, y: -30, w: this.bw + 60, h: this.bh + 60 }, { w: this.cssW, h: this.cssH }, this.insets);
     this.camGlide = { fromZoom: this.cam.zoom, fromPan: { ...this.cam.pan }, toZoom: target.zoom, toPan: target.pan };
     this.hintMark = null;
     sfx.complete();
-    if (!store.settings.reduceMotion) this.particles.rain(-100, -200, BOARD_W + 200, 140, 14);
+    if (!store.settings.reduceMotion) this.particles.rain(-100, -200, this.bw + 200, 140, 14);
     setTimeout(() => this.cb.complete({ ms: this.elapsed * 1000, hints: this.hints }), 1900);
   }
 
@@ -578,13 +632,16 @@ export class JigsawScene implements InputHandler {
 
     if (this.boardDirty || this.settle.size) this.redrawBoardLayer();
     if (this.settle.size) this.boardDirty = true;
-    ctx.drawImage(this.boardLayer, 0, 0, BOARD_W, BOARD_H);
+    ctx.drawImage(this.boardLayer, 0, 0, this.bw, this.bh);
 
     // Locked pieces still settling are drawn on top of the cached layer.
     for (const p of e.pieces) if (p.group.locked && this.settle.has(p.id)) this.drawPiece(ctx, p, false);
 
     if (this.intro > 0) {
-      ctx.drawImage(this.image, 0, 0, BOARD_W, BOARD_H);
+      ctx.save();
+      if (this.shapePath) ctx.clip(this.shapePath);
+      ctx.drawImage(this.image, 0, 0, this.bw, this.bh);
+      ctx.restore();
     }
 
     if (this.hintMark) this.drawHintTarget(ctx, this.hintMark.piece, this.hintMark.t);
@@ -619,13 +676,16 @@ export class JigsawScene implements InputHandler {
       const k = clamp((this.finale - 0.3) / 1.1, 0, 1);
       ctx.save();
       ctx.globalAlpha = easeOutCubic(k);
-      ctx.drawImage(this.image, 0, 0, BOARD_W, BOARD_H);
+      if (this.shapePath) ctx.clip(this.shapePath);
+      ctx.drawImage(this.image, 0, 0, this.bw, this.bh);
       ctx.restore();
       const glowK = Math.sin(clamp(this.finale / 1.6, 0, 1) * Math.PI);
       ctx.save();
       ctx.strokeStyle = `rgba(243,220,152,${glowK})`;
       ctx.lineWidth = 6 / this.cam.zoom + glowK * 6;
-      ctx.strokeRect(-2, -2, BOARD_W + 4, BOARD_H + 4);
+      ctx.lineJoin = 'round';
+      if (this.shapePath) ctx.stroke(this.shapePath);
+      else ctx.strokeRect(-2, -2, this.bw + 4, this.bh + 4);
       ctx.restore();
     }
 
@@ -643,6 +703,10 @@ export class JigsawScene implements InputHandler {
   }
 
   private drawBoard(ctx: CanvasRenderingContext2D) {
+    if (this.shapePath) {
+      this.drawShapedBoard(ctx, this.shapePath);
+      return;
+    }
     const frame = 14;
     // Lacquer tray with a soft drop shadow.
     ctx.save();
@@ -650,23 +714,51 @@ export class JigsawScene implements InputHandler {
     ctx.shadowBlur = 40 * this.cam.zoom * this.dpr;
     ctx.shadowOffsetY = 12 * this.cam.zoom * this.dpr;
     ctx.fillStyle = '#1c0907';
-    ctx.fillRect(-frame, -frame, BOARD_W + frame * 2, BOARD_H + frame * 2);
+    ctx.fillRect(-frame, -frame, this.bw + frame * 2, this.bh + frame * 2);
     ctx.restore();
-    const g = ctx.createLinearGradient(-frame, -frame, BOARD_W + frame, BOARD_H + frame);
+    const g = ctx.createLinearGradient(-frame, -frame, this.bw + frame, this.bh + frame);
     g.addColorStop(0, '#f0d58a');
     g.addColorStop(0.5, '#a87a2c');
     g.addColorStop(1, '#e2bb63');
     ctx.strokeStyle = g;
     ctx.lineWidth = 3;
-    ctx.strokeRect(-frame / 2, -frame / 2, BOARD_W + frame, BOARD_H + frame);
+    ctx.strokeRect(-frame / 2, -frame / 2, this.bw + frame, this.bh + frame);
     ctx.fillStyle = '#140605';
-    ctx.fillRect(0, 0, BOARD_W, BOARD_H);
+    ctx.fillRect(0, 0, this.bw, this.bh);
     if (this.ghost) {
       ctx.save();
       ctx.globalAlpha = 0.2;
-      ctx.drawImage(this.image, 0, 0, BOARD_W, BOARD_H);
+      ctx.drawImage(this.image, 0, 0, this.bw, this.bh);
       ctx.restore();
     }
+  }
+
+  /** A recess in the shape of the animal, with an inlaid gold outline. */
+  private drawShapedBoard(ctx: CanvasRenderingContext2D, shape: Path2D) {
+    ctx.save();
+    ctx.shadowColor = 'rgba(0,0,0,0.55)';
+    ctx.shadowBlur = 30 * this.cam.zoom * this.dpr;
+    ctx.shadowOffsetY = 10 * this.cam.zoom * this.dpr;
+    ctx.fillStyle = '#140605';
+    ctx.fill(shape);
+    ctx.restore();
+    if (this.ghost) {
+      ctx.save();
+      ctx.clip(shape);
+      ctx.globalAlpha = 0.22;
+      ctx.drawImage(this.image, 0, 0, this.bw, this.bh);
+      ctx.restore();
+    }
+    const g = ctx.createLinearGradient(0, 0, this.bw, this.bh);
+    g.addColorStop(0, '#f0d58a');
+    g.addColorStop(0.5, '#a87a2c');
+    g.addColorStop(1, '#e2bb63');
+    ctx.save();
+    ctx.strokeStyle = g;
+    ctx.lineJoin = 'round';
+    ctx.lineWidth = Math.max(2.5, 2.2 / this.cam.zoom);
+    ctx.stroke(shape);
+    ctx.restore();
   }
 
   private applySpin(ctx: CanvasRenderingContext2D, g: Group) {
@@ -714,6 +806,7 @@ export class JigsawScene implements InputHandler {
   private strokePiece(ctx: CanvasRenderingContext2D, p: Piece, color: string, width: number) {
     ctx.save();
     this.pieceTransform(ctx, p);
+    this.clipToShape(ctx, p);
     ctx.strokeStyle = color;
     ctx.lineWidth = width;
     ctx.stroke(this.sprites[p.id].path);
@@ -726,6 +819,7 @@ export class JigsawScene implements InputHandler {
     for (const p of pieces) {
       ctx.save();
       this.pieceTransform(ctx, p);
+      this.clipToShape(ctx, p);
       ctx.setLineDash([s * 0.5, s * 2.5]);
       ctx.lineDashOffset = -k * s * 6;
       ctx.strokeStyle = `rgba(255,236,170,${1 - k})`;
@@ -741,6 +835,7 @@ export class JigsawScene implements InputHandler {
     const a = Math.min(1, t * 3) * Math.min(1, (3.2 - t) * 2);
     ctx.save();
     ctx.translate(p.col * e.pw, p.row * e.ph);
+    this.clipToShape(ctx, p);
     ctx.fillStyle = `rgba(243,220,152,${0.18 * a})`;
     ctx.fill(this.sprites[p.id].path);
     ctx.setLineDash([8, 6]);

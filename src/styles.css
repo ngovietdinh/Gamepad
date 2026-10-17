@@ -1096,3 +1096,16 @@ html.reduce-motion *::after {
 .credits-list a {
   color: var(--egg);
 }
+
+.shape-preview {
+  position: relative;
+}
+
+.shape-preview .shape-outline {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+}

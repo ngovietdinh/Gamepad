@@ -29,6 +29,15 @@ export type DropResult =
   | { kind: 'join'; group: Group; shift: Vec }
   | { kind: 'lock'; group: Group; shift: Vec };
 
+/** Which cells exist for a shaped (silhouette) puzzle, and which start pre-joined. */
+export interface CellLayout {
+  present: boolean[][];
+  /** Piece sits on the silhouette outline (used by the edge filter). */
+  edge: boolean[][];
+  /** Tiny slivers start glued to this neighbour so no piece is a speck. */
+  joinTo: ([number, number] | null)[][];
+}
+
 export interface JigsawOptions {
   cols: number;
   rows: number;
@@ -36,6 +45,7 @@ export interface JigsawOptions {
   boardH: number;
   rotation: boolean;
   rng: Rng;
+  layout?: CellLayout;
 }
 
 const QUARTER = Math.PI / 2;
@@ -50,29 +60,43 @@ export class JigsawEngine {
   readonly snapDist: number;
   table = { x: 0, y: 0, w: 0, h: 0 };
   private nextGroupId = 0;
+  private grid: (Piece | undefined)[] = [];
 
   constructor(readonly opts: JigsawOptions) {
-    const { cols, rows, boardW, boardH, rng } = opts;
-    this.cut = generateCut(cols, rows, rng);
+    const { cols, rows, boardW, boardH, rng, layout } = opts;
+    const present = (r: number, c: number) =>
+      r >= 0 && c >= 0 && r < rows && c < cols && (!layout || layout.present[r][c]);
+    this.cut = generateCut(cols, rows, rng, present);
     this.pw = boardW / cols;
     this.ph = boardH / rows;
     this.snapDist = Math.min(this.pw, this.ph) * 0.28;
     let id = 0;
     for (let r = 0; r < rows; r++) {
       for (let c = 0; c < cols; c++) {
+        if (!present(r, c)) continue;
         const home = { x: (c + 0.5) * this.pw, y: (r + 0.5) * this.ph };
-        const piece: Piece = { id: id++, row: r, col: c, home, edge: isEdgePiece(this.cut, r, c), group: null! };
+        const edge = layout ? layout.edge[r][c] : isEdgePiece(this.cut, r, c);
+        const piece: Piece = { id: id++, row: r, col: c, home, edge, group: null! };
         const g: Group = { id: this.nextGroupId++, pieces: [piece], pos: { ...home }, ref: { ...home }, rot: 0, locked: false };
         piece.group = g;
         this.pieces.push(piece);
         this.groups.push(g);
+        this.grid[r * cols + c] = piece;
+      }
+    }
+    // Glue slivers to their neighbour; everything still sits at home, so groups align.
+    if (layout) {
+      for (const p of this.pieces) {
+        const t = layout.joinTo[p.row][p.col];
+        const q = t && this.pieceAt(t[0], t[1]);
+        if (q && q.group !== p.group) this.merge(q.group, p.group);
       }
     }
   }
 
   pieceAt(row: number, col: number): Piece | undefined {
     if (row < 0 || col < 0 || row >= this.opts.rows || col >= this.opts.cols) return undefined;
-    return this.pieces[row * this.opts.cols + col];
+    return this.grid[row * this.opts.cols + col];
   }
 
   /** World center of a piece given its group's transform. */

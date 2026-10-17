@@ -4,3 +4,4 @@ dev-dist
 .vercel
 *.log
 dev
+scripts/animals/.cache

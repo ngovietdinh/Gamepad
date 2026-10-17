@@ -23,9 +23,9 @@ export interface Cut {
   cols: number;
   rows: number;
   /** Edges below piece (r, c), r in [0, rows-2]. */
-  h: EdgeSpec[][];
-  /** Edges right of piece (r, c), c in [0, cols-2]. */
-  v: EdgeSpec[][];
+  h: (EdgeSpec | null)[][];
+  /** Edges right of piece (r, c), c in [0, cols-2]. Null edges are cut straight. */
+  v: (EdgeSpec | null)[][];
 }
 
 export type PathCmd =
@@ -46,16 +46,27 @@ function makeEdge(rng: Rng): EdgeSpec {
   };
 }
 
-export function generateCut(cols: number, rows: number, rng: Rng): Cut {
-  const h: EdgeSpec[][] = [];
-  const v: EdgeSpec[][] = [];
+/**
+ * `present` marks the cells that become pieces (all by default). An edge
+ * between a piece and an empty cell is cut straight, so nothing of the
+ * picture hides in a knob that belongs to no piece.
+ */
+export function generateCut(cols: number, rows: number, rng: Rng, present: (r: number, c: number) => boolean = () => true): Cut {
+  const h: (EdgeSpec | null)[][] = [];
+  const v: (EdgeSpec | null)[][] = [];
   for (let r = 0; r < rows - 1; r++) {
     h.push([]);
-    for (let c = 0; c < cols; c++) h[r].push(makeEdge(rng));
+    for (let c = 0; c < cols; c++) {
+      const e = makeEdge(rng);
+      h[r].push(present(r, c) && present(r + 1, c) ? e : null);
+    }
   }
   for (let r = 0; r < rows; r++) {
     v.push([]);
-    for (let c = 0; c < cols - 1; c++) v[r].push(makeEdge(rng));
+    for (let c = 0; c < cols - 1; c++) {
+      const e = makeEdge(rng);
+      v[r].push(present(r, c) && present(r, c + 1) ? e : null);
+    }
   }
   return { cols, rows, h, v };
 }
