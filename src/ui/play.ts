@@ -19,6 +19,8 @@ import {
   tangramTierUnlocked,
 } from './levels';
 import { Router, View } from './router';
+import { hashString } from '../core/rng';
+import { PHOTOS, PHOTO_SIZES, creditLine, loadImage, photoId, photoUrl } from '../photos/photos';
 
 function tool(icon: IconName, label: string, onClick: (btn: HTMLButtonElement) => void, pressed?: boolean) {
   const b = h('button', {
@@ -74,20 +76,32 @@ function shell(router: Router, title: string, sub: HTMLElement, tools: HTMLEleme
 /* Jigsaw                                                              */
 /* ------------------------------------------------------------------ */
 
-export function jigsawPlay(router: Router, params: string[]): View | HTMLElement {
-  const painting = PAINTINGS.find((p) => p.id === params[0]);
-  const def = JIGSAW_LEVELS[Number(params[1])];
-  if (!painting || !def || !jigsawUnlocked(painting, def.index)) {
-    router.go('/jigsaw');
-    return h('div');
-  }
-  const total = def.cols * def.rows;
+interface JigsawRun {
+  title: string;
+  cols: number;
+  rows: number;
+  rotation: boolean;
+  seed: number;
+  recordId: string;
+  par: number;
+  back: string;
+  replay: string;
+  next?: string;
+  /** Resolves to a renderer for the picture once it is ready (photos load from the network cache). */
+  load: () => Promise<(widthPx: number) => HTMLCanvasElement>;
+  /** Picture shown on the result card. */
+  resultArt: () => HTMLElement;
+}
+
+function runJigsaw(router: Router, run: JigsawRun): View {
+  const total = run.cols * run.rows;
   const timeEl = h('b', {}, '00:00');
   const countEl = h('b', {}, `0/${total}`);
-  const sub = h('div', { class: 'sub' }, h('span', {}, timeEl), h('span', {}, countEl, ' mảnh'), def.rotation ? h('span', {}, 'Chạm để xoay') : null);
+  const sub = h('div', { class: 'sub' }, h('span', {}, timeEl), h('span', {}, countEl, ' mảnh'), run.rotation ? h('span', {}, 'Chạm để xoay') : null);
 
   let scene: JigsawScene | null = null;
   let finished = false;
+  let destroyed = false;
   const tools = [
     tool('hint', 'Gợi ý', () => scene?.hint()),
     tool('edges', 'Mảnh viền', (b) => {
@@ -105,66 +119,127 @@ export function jigsawPlay(router: Router, params: string[]): View | HTMLElement
     tool('fit', 'Vừa khung', () => scene?.fit()),
   ];
 
-  const ui = shell(router, painting.title, sub, tools, () => !!scene && scene.stats.locked > 0 && !finished, '/jigsaw');
-  const t = tip(def.rotation ? 'Chạm vào mảnh để xoay 90°, hoặc vặn hai ngón tay khi đang giữ mảnh' : 'Kéo mảnh bằng Apple Pencil hoặc ngón tay. Hai ngón để phóng to.');
-  ui.el.append(t.el);
+  const ui = shell(router, run.title, sub, tools, () => !!scene && scene.stats.locked > 0 && !finished, run.back);
+  const t = tip(run.rotation ? 'Chạm vào mảnh để xoay 90°, hoặc vặn hai ngón tay khi đang giữ mảnh' : 'Kéo mảnh bằng Apple Pencil hoặc ngón tay. Hai ngón để phóng to.');
+  const loading = h('div', { class: 'loading', role: 'status' }, 'Đang chuẩn bị bức ảnh…');
+  ui.el.append(t.el, loading);
   ui.el.addEventListener('pointerdown', () => t.hide(), { once: true });
 
   const timer = setInterval(() => {
     if (scene) timeEl.textContent = formatTime(scene.stats.ms);
   }, 250);
 
-  requestAnimationFrame(() => {
-    scene = new JigsawScene(
-      ui.host,
-      { painting, cols: def.cols, rows: def.rows, rotation: def.rotation, seed: jigsawSeed(painting, def.index) },
-      {
-        progress(locked, n) {
-          countEl.textContent = `${locked}/${n}`;
-          ui.progress.style.width = `${(locked / n) * 100}%`;
+  run
+    .load()
+    .then((art) => {
+      if (destroyed) return;
+      loading.remove();
+      scene = new JigsawScene(
+        ui.host,
+        { art, cols: run.cols, rows: run.rows, rotation: run.rotation, seed: run.seed },
+        {
+          progress(locked, n) {
+            countEl.textContent = `${locked}/${n}`;
+            ui.progress.style.width = `${(locked / n) * 100}%`;
+          },
+          complete({ ms, hints }) {
+            finished = true;
+            const stars = starsFor(ms, hints, run.par);
+            const newBest = store.complete(run.recordId, stars, ms);
+            openResult({
+              title: run.title,
+              subtitle: `Hoàn thành ${total} mảnh${run.rotation ? ' có xoay' : ''}`,
+              art: run.resultArt(),
+              stars,
+              ms,
+              hints,
+              bestMs: store.record(run.recordId)!.bestMs,
+              newBest,
+              next: run.next ? () => router.go(run.next!) : undefined,
+              replay: () => router.go(run.replay),
+              menu: () => router.go(run.back),
+            });
+          },
         },
-        complete({ ms, hints }) {
-          finished = true;
-          const id = jigsawId(painting, def.index);
-          const stars = starsFor(ms, hints, jigsawPar(def));
-          const newBest = store.complete(id, stars, ms);
-          const art = renderPainting(painting, 936);
-          const copy = h('canvas');
-          copy.width = art.width;
-          copy.height = art.height;
-          copy.getContext('2d')!.drawImage(art, 0, 0);
-          const nextDef = JIGSAW_LEVELS[def.index + 1];
-          const nextPainting = PAINTINGS[PAINTINGS.indexOf(painting) + 1];
-          openResult({
-            title: painting.title,
-            subtitle: `Hoàn thành ${total} mảnh${def.rotation ? ' có xoay' : ''}`,
-            art: copy,
-            stars,
-            ms,
-            hints,
-            bestMs: store.record(id)!.bestMs,
-            newBest,
-            next: nextDef
-              ? () => router.go(`/play/jigsaw/${painting.id}/${nextDef.index}`)
-              : nextPainting
-                ? () => router.go(`/play/jigsaw/${nextPainting.id}/0`)
-                : undefined,
-            replay: () => router.go(`/play/jigsaw/${painting.id}/${def.index}`),
-            menu: () => router.go('/jigsaw'),
-          });
-        },
-      },
-    );
-    if (import.meta.env.DEV) (window as unknown as { __scene: unknown }).__scene = scene;
-  });
+      );
+      if (import.meta.env.DEV) (window as unknown as { __scene: unknown }).__scene = scene;
+    })
+    .catch(() => {
+      loading.textContent = 'Không tải được ảnh. Kiểm tra kết nối mạng rồi mở lại màn này.';
+    });
 
   return {
     el: ui.el,
     destroy() {
+      destroyed = true;
       clearInterval(timer);
       scene?.destroy();
     },
   };
+}
+
+function canvasCopy(src: HTMLCanvasElement | HTMLImageElement, w: number, hgt: number) {
+  const c = h('canvas');
+  c.width = w;
+  c.height = hgt;
+  c.getContext('2d')!.drawImage(src, 0, 0, w, hgt);
+  return c;
+}
+
+export function jigsawPlay(router: Router, params: string[]): View | HTMLElement {
+  const painting = PAINTINGS.find((p) => p.id === params[0]);
+  const def = JIGSAW_LEVELS[Number(params[1])];
+  if (!painting || !def || !jigsawUnlocked(painting, def.index)) {
+    router.go('/jigsaw');
+    return h('div');
+  }
+  const nextDef = JIGSAW_LEVELS[def.index + 1];
+  const nextPainting = PAINTINGS[PAINTINGS.indexOf(painting) + 1];
+  return runJigsaw(router, {
+    title: painting.title,
+    cols: def.cols,
+    rows: def.rows,
+    rotation: def.rotation,
+    seed: jigsawSeed(painting, def.index),
+    recordId: jigsawId(painting, def.index),
+    par: jigsawPar(def),
+    back: '/jigsaw',
+    replay: `/play/jigsaw/${painting.id}/${def.index}`,
+    next: nextDef ? `/play/jigsaw/${painting.id}/${nextDef.index}` : nextPainting ? `/play/jigsaw/${nextPainting.id}/0` : undefined,
+    load: async () => (w) => renderPainting(painting, w),
+    resultArt: () => canvasCopy(renderPainting(painting, 936), 936, 702),
+  });
+}
+
+export function photoPlay(router: Router, params: string[]): View | HTMLElement {
+  const photo = PHOTOS.find((p) => p.id === params[0]);
+  const size = PHOTO_SIZES.find((s) => s.cols * s.rows === Number(params[1]));
+  const rotation = params[2] === '1';
+  if (!photo || !size) {
+    router.go('/jigsaw/photos');
+    return h('div');
+  }
+  let img: HTMLImageElement | null = null;
+  return runJigsaw(router, {
+    title: photo.name,
+    cols: size.cols,
+    rows: size.rows,
+    rotation,
+    seed: hashString(`${photo.id}#${size.cols}x${size.rows}#${rotation}`),
+    recordId: photoId(photo, size, rotation),
+    par: jigsawPar({ index: 0, cols: size.cols, rows: size.rows, rotation }),
+    back: '/jigsaw/photos',
+    replay: `/play/photo/${photo.id}/${size.cols * size.rows}/${rotation ? 1 : 0}`,
+    load: async () => {
+      img = await loadImage(photoUrl(photo));
+      const loaded = img;
+      return () => canvasCopy(loaded, loaded.naturalWidth, loaded.naturalHeight);
+    },
+    resultArt: () => {
+      const wrap = h('div', { class: 'credit-art' }, canvasCopy(img!, 936, 702), h('div', { class: 'credit' }, creditLine(photo)));
+      return wrap;
+    },
+  });
 }
 
 /* ------------------------------------------------------------------ */

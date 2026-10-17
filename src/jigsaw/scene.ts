@@ -3,14 +3,14 @@ import { Vec, add, clamp, easeOutBack, easeOutCubic, lerp, sub } from '../core/g
 import { InputHandler, InputManager, PointerSample, TwistGesture } from '../core/input';
 import { makeRng } from '../core/rng';
 import { store } from '../core/store';
-import { Painting, renderPainting } from '../art/paintings';
 import { sfx } from '../fx/audio';
 import { Particles } from '../fx/particles';
 import { KNOB_REACH, applyPath, pieceOutline } from './cut';
 import { Group, JigsawEngine, Piece } from './engine';
 
 export interface JigsawLevel {
-  painting: Painting;
+  /** Renders the picture at (about) the given pixel width; 4:3. */
+  art: (widthPx: number) => HTMLCanvasElement;
   cols: number;
   rows: number;
   rotation: boolean;
@@ -169,7 +169,7 @@ export class JigsawScene implements InputHandler {
     this.fit();
     // Sprite resolution: sharp at 2x zoom on a retina screen, capped for memory.
     this.res = clamp(this.cam.zoom * this.dpr * 1.8, 1, 2400 / BOARD_W);
-    this.image = renderPainting(this.level.painting, BOARD_W * this.res);
+    this.image = this.level.art(BOARD_W * this.res);
     const s = Math.min(e.pw, e.ph);
     this.pad = s * KNOB_REACH + 3;
     this.shadowPad = this.pad + s * 0.12;

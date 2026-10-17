@@ -3,6 +3,32 @@ import { sfx } from '../fx/audio';
 import { h, formatTime } from './dom';
 import { icons } from './icons';
 import { Router } from './router';
+import { PHOTOS } from '../photos/photos';
+
+function openCredits() {
+  const s = scrim(() => s.remove());
+  s.style.zIndex = '30';
+  s.append(
+    h(
+      'div',
+      { class: 'dialog', role: 'dialog', 'aria-label': 'Nguồn ảnh' },
+      h(
+        'div',
+        { class: 'topbar', style: 'margin-bottom:10px' },
+        h('div', { class: 'grow' }, h('h2', { class: 'title', style: 'font-size:30px' }, 'Nguồn ảnh')),
+        h('button', { class: 'icon-btn', 'aria-label': 'Đóng', html: icons.close, onclick: () => s.remove() }),
+      ),
+      h('p', { class: 'muted', style: 'font-size:14px;margin-top:0' }, 'Ảnh động vật lấy từ Wikimedia Commons, dùng theo giấy phép tự do của từng tác giả.'),
+      h(
+        'ul',
+        { class: 'credits-list' },
+        ...PHOTOS.map((p) =>
+          h('li', {}, h('a', { href: p.credit.source, target: '_blank', rel: 'noopener' }, p.name), ` — ${p.credit.artist}, ${p.credit.license}`),
+        ),
+      ),
+    ),
+  );
+}
 
 function scrim(onClose?: () => void) {
   const s = h('div', { class: 'scrim' });
@@ -70,7 +96,7 @@ export function openSettings(router: Router, onChange?: () => void) {
         { class: 'muted', style: 'font-size:14px;margin:18px 0' },
         'Mẹo: dùng Apple Pencil để cầm mảnh chính xác, nhấn mạnh tay thì mảnh nhấc cao hơn. Hai ngón tay để phóng to hoặc kéo bàn chơi.',
       ),
-      h('div', { class: 'actions' }, reset),
+      h('div', { class: 'actions' }, PHOTOS.length ? h('button', { class: 'btn quiet', onclick: openCredits }, 'Nguồn ảnh') : null, reset),
     ),
   );
 }

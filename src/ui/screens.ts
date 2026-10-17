@@ -20,6 +20,8 @@ import {
 } from './levels';
 import { Router } from './router';
 import { openSettings } from './dialogs';
+import { sfx } from '../fx/audio';
+import { GROUPS, PHOTOS, PHOTO_SIZES, Photo, PhotoGroup, creditLine, photoBest, photoId, photoUrl, thumbUrl } from '../photos/photos';
 
 function stars(n: number) {
   return h('span', { class: 'stars', 'aria-label': `${n} trên 3 sao` }, ...[0, 1, 2].map((i) => h('i', { class: i < n ? 'on' : '' })));
@@ -54,7 +56,7 @@ export function homeScreen(router: Router) {
         h(
           'div',
           { class: 'meta' },
-          h('div', {}, h('div', { class: 'name' }, 'Tranh ghép'), h('div', { class: 'desc' }, '5 bức sơn mài, mỗi bức 6 cấp từ 12 đến 108 mảnh')),
+          h('div', {}, h('div', { class: 'name' }, 'Tranh ghép'), h('div', { class: 'desc' }, PHOTOS.length ? `5 bức sơn mài và ${PHOTOS.length} ảnh động vật thật` : '5 bức sơn mài, mỗi bức 6 cấp từ 12 đến 108 mảnh')),
           h('div', { class: 'count' }, `${jp.done}/${jp.total} màn`),
         ),
       ),
@@ -257,6 +259,7 @@ export function jigsawMenu(router: Router) {
       { class: 'topbar' },
       h('button', { class: 'icon-btn', 'aria-label': 'Quay lại', html: icons.back, onclick: () => router.go('/') }),
       h('div', { class: 'grow' }, h('h2', { class: 'title' }, 'Tranh ghép')),
+      jigsawTabs(router, 'paint'),
     ),
     list,
   );
@@ -355,4 +358,141 @@ export function tangramMenu(router: Router) {
     );
   });
   return el;
+}
+
+/* ------------------------------------------------------------------ */
+/* Animal photos                                                       */
+/* ------------------------------------------------------------------ */
+
+function jigsawTabs(router: Router, active: 'paint' | 'photo') {
+  const tab = (id: 'paint' | 'photo', label: string, path: string) =>
+    h('button', { class: 'seg', role: 'tab', 'aria-selected': String(active === id), onclick: () => router.go(path) }, label);
+  return h('div', { class: 'segmented', role: 'tablist' }, tab('paint', 'Tranh sơn mài', '/jigsaw'), tab('photo', `Ảnh động vật`, '/jigsaw/photos'));
+}
+
+let lastGroup: PhotoGroup | 'all' = 'all';
+
+export function photosMenu(router: Router) {
+  const grid = h('div', { class: 'photo-grid' });
+  const chips = h('div', { class: 'chips', role: 'tablist' });
+  const render = () => {
+    chips.replaceChildren(
+      ...[{ id: 'all' as const, name: 'Tất cả' }, ...GROUPS].map((g) =>
+        h(
+          'button',
+          {
+            class: 'chip',
+            role: 'tab',
+            'aria-selected': String(lastGroup === g.id),
+            onclick: () => {
+              lastGroup = g.id;
+              render();
+            },
+          },
+          g.name,
+          h('span', { class: 'n' }, g.id === 'all' ? PHOTOS.length : PHOTOS.filter((p) => p.group === g.id).length),
+        ),
+      ),
+    );
+    grid.replaceChildren(
+      ...PHOTOS.filter((p) => lastGroup === 'all' || p.group === lastGroup).map((p) => {
+        const best = photoBest(p);
+        return h(
+          'button',
+          { class: `photo ${best.done ? 'done' : ''}`, 'aria-label': p.name, onclick: () => openPhotoSheet(router, p) },
+          h('img', { src: thumbUrl(p), alt: '', loading: 'lazy', decoding: 'async', width: 480, height: 360 }),
+          h('span', { class: 'cap' }, h('span', { class: 'label' }, p.name), best.done ? stars(best.stars) : null),
+        );
+      }),
+    );
+  };
+  render();
+  return h(
+    'main',
+    { class: 'screen enter' },
+    h(
+      'header',
+      { class: 'topbar' },
+      h('button', { class: 'icon-btn', 'aria-label': 'Quay lại', html: icons.back, onclick: () => router.go('/') }),
+      h('div', { class: 'grow' }, h('h2', { class: 'title' }, 'Tranh ghép')),
+      jigsawTabs(router, 'photo'),
+    ),
+    PHOTOS.length ? chips : null,
+    PHOTOS.length ? grid : h('p', { class: 'muted' }, 'Chưa có ảnh nào trong bộ sưu tập.'),
+  );
+}
+
+let lastSize = 1;
+let lastRotation = false;
+
+function openPhotoSheet(router: Router, p: Photo) {
+  const close = () => s.remove();
+  const s = h('div', { class: 'scrim' });
+  s.addEventListener('click', (e) => {
+    if (e.target === s) close();
+  });
+  const sizes = h('div', { class: 'sizes', role: 'radiogroup', 'aria-label': 'Số mảnh' });
+  const rot = h('button', { class: 'switch', role: 'switch', 'aria-checked': String(lastRotation), 'aria-label': 'Xoay mảnh' });
+  const renderSizes = () =>
+    sizes.replaceChildren(
+      ...PHOTO_SIZES.map((sz, i) => {
+        const rec = store.record(photoId(p, sz, lastRotation));
+        return h(
+          'button',
+          {
+            class: `size ${rec ? 'done' : ''}`,
+            role: 'radio',
+            'aria-checked': String(i === lastSize),
+            onclick: () => {
+              lastSize = i;
+              renderSizes();
+              sfx.ui();
+            },
+          },
+          h('span', { class: 'n' }, sz.cols * sz.rows),
+          h('span', { class: 'unit' }, 'mảnh'),
+          rec ? stars(rec.stars) : null,
+        );
+      }),
+    );
+  rot.addEventListener('click', () => {
+    lastRotation = !lastRotation;
+    rot.setAttribute('aria-checked', String(lastRotation));
+    renderSizes();
+    sfx.ui();
+  });
+  renderSizes();
+  s.append(
+    h(
+      'div',
+      { class: 'dialog photo-sheet', role: 'dialog', 'aria-label': p.name },
+      h('div', { class: 'art' }, h('img', { src: photoUrl(p), alt: p.name, width: 1600, height: 1200 })),
+      h(
+        'div',
+        { class: 'topbar', style: 'margin-bottom:4px' },
+        h('div', { class: 'grow' }, h('h2', { class: 'title' }, p.name)),
+        h('button', { class: 'icon-btn', 'aria-label': 'Đóng', html: icons.close, onclick: close }),
+      ),
+      h('a', { class: 'credit', href: p.credit.source, target: '_blank', rel: 'noopener' }, creditLine(p)),
+      sizes,
+      h('div', { class: 'setting' }, h('div', {}, h('div', { class: 't' }, 'Xoay mảnh'), h('div', { class: 'd' }, 'Mảnh bị xoay ngẫu nhiên, chạm để xoay lại')), rot),
+      h(
+        'div',
+        { class: 'actions', style: 'margin-top:20px' },
+        h(
+          'button',
+          {
+            class: 'btn primary',
+            onclick: () => {
+              close();
+              const sz = PHOTO_SIZES[lastSize];
+              router.go(`/play/photo/${p.id}/${sz.cols * sz.rows}/${lastRotation ? 1 : 0}`);
+            },
+          },
+          'Bắt đầu ghép',
+        ),
+      ),
+    ),
+  );
+  document.getElementById('app')!.append(s);
 }
