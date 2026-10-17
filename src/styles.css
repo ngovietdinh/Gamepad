@@ -223,6 +223,18 @@ h3.section {
   gap: 20px;
 }
 
+.byline {
+  margin: 10px 0 0;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  color: var(--egg-faint);
+}
+
+.byline b {
+  color: var(--gold);
+  font-weight: 600;
+}
+
 .modes {
   display: grid;
   grid-template-columns: minmax(0, 1.75fr) minmax(0, 1fr);

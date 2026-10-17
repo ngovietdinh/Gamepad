@@ -250,7 +250,6 @@ export function photoPlay(router: Router, params: string[]): View | HTMLElement 
   const n = size.cols * size.rows;
   const route = (p: Photo) => `/play/photo/${p.id}/${n}/${rotation ? 1 : 0}/${shaped ? 1 : 0}`;
   let img: HTMLImageElement | null = null;
-  let board: { polys: Polys; boardW: number; boardH: number } | null = null;
   const nextPhoto = PHOTOS[PHOTOS.indexOf(photo) + 1];
   return runJigsaw(router, {
     title: photo.name,
@@ -272,7 +271,6 @@ export function photoPlay(router: Router, params: string[]): View | HTMLElement 
       const [shape, cut] = await Promise.all([loadShape(photo), loadImage(cutoutUrl(photo))]);
       img = cut;
       const b = shapedBoard(shape);
-      board = b;
       const plan = planShaped(b.polys, b.boardW, b.boardH, n);
       return {
         art: () => canvasCopy(cut, cut.naturalWidth, cut.naturalHeight),
@@ -285,39 +283,10 @@ export function photoPlay(router: Router, params: string[]): View | HTMLElement 
       };
     },
     resultArt: () => {
-      const art = board ? cutoutCanvas(img!, board.polys, board.boardW, board.boardH, 936) : canvasCopy(img!, 936, 702);
+      const art = canvasCopy(img!, 936, 702);
       return h('div', { class: 'credit-art' }, art, h('div', { class: 'credit' }, creditLine(photo)));
     },
   });
-}
-
-/** The animal alone on the lacquer ground, for the result card. */
-function cutoutCanvas(img: HTMLImageElement, polys: Polys, boardW: number, boardH: number, width: number) {
-  const W = width;
-  const H = Math.round((width * 3) / 4);
-  const c = h('canvas');
-  c.width = W;
-  c.height = H;
-  const ctx = c.getContext('2d')!;
-  ctx.fillStyle = '#1a0806';
-  ctx.fillRect(0, 0, W, H);
-  const scale = Math.min((W * 0.9) / boardW, (H * 0.9) / boardH);
-  ctx.translate((W - boardW * scale) / 2, (H - boardH * scale) / 2);
-  ctx.scale(scale, scale);
-  ctx.beginPath();
-  for (const p of polys) {
-    for (let i = 0; i < p.length; i += 2) (i ? ctx.lineTo(p[i], p[i + 1]) : ctx.moveTo(p[i], p[i + 1]));
-    ctx.closePath();
-  }
-  ctx.save();
-  ctx.shadowColor = 'rgba(0,0,0,0.6)';
-  ctx.shadowBlur = 24 * scale;
-  ctx.fillStyle = '#000';
-  ctx.fill();
-  ctx.restore();
-  ctx.clip();
-  ctx.drawImage(img, 0, 0, boardW, boardH);
-  return c;
 }
 
 /* ------------------------------------------------------------------ */

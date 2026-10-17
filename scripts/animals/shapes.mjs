@@ -1,7 +1,7 @@
 // Turns each mask into a smooth silhouette outline for shaped puzzles:
 // removes whiskers and specks, fills holes, traces the outline and simplifies it.
-// Writes public/photos/<id>.json in board units (1200×900), and a sharp crop of
-// the animal from the full-size source to public/photos/<id>-s.webp.
+// Writes public/photos/<id>.json in board units (1200×900), and a sharp 4:3 crop
+// of the animal with some background from the full-size source to public/photos/<id>-s.webp.
 // Photos marked "shape": false in selection.json (silhouette not usable) are skipped.
 // Run: node scripts/animals/shapes.mjs   (after build.mjs and masks.mjs)
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
@@ -14,12 +14,19 @@ const selection = JSON.parse(readFileSync(new URL('scripts/animals/selection.jso
 const frames = JSON.parse(readFileSync(new URL('scripts/animals/frames.json', root), 'utf8'));
 const skip = new Set(selection.filter((s) => s.shape === false).map((s) => s.id));
 
-/** Silhouette bounding box plus margin, clamped to the 1200×900 frame (matches src/jigsaw/shape.ts). */
-function shapeCrop([x, y, w, h], margin = 0.04) {
+/** 4:3 window around the silhouette with some background, inside the 1200×900 frame (matches shapeWindow in src/jigsaw/shape.ts). */
+function shapeWindow([x, y, w, h], margin = 0.16) {
   const m = Math.max(w, h) * margin;
-  const x0 = Math.max(0, x - m);
-  const y0 = Math.max(0, y - m);
-  return { x: x0, y: y0, w: Math.min(1200, x + w + m) - x0, h: Math.min(900, y + h + m) - y0 };
+  let ww = w + m * 2;
+  let wh = h + m * 2;
+  if (ww / wh > 4 / 3) wh = (ww * 3) / 4;
+  else ww = (wh * 4) / 3;
+  if (ww > 1200 || wh > 900) {
+    ww = 1200;
+    wh = 900;
+  }
+  const clamp = (v, hi) => Math.min(Math.max(v, 0), hi);
+  return { x: clamp(x + w / 2 - ww / 2, 1200 - ww), y: clamp(y + h / 2 - wh / 2, 900 - wh), w: ww, h: wh };
 }
 const W = 480;
 const H = 360;
@@ -202,8 +209,8 @@ for (const p of manifest) {
   const ys = polys.flatMap((q) => q.filter((_, i) => i % 2 === 1));
   const bbox = [Math.min(...xs), Math.min(...ys), Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys)].map((v) => Math.round(v));
   const filled = loops.reduce((s, l) => s + area(l), 0) * SCALE * SCALE;
-  // Sharp crop of the silhouette area straight from the full-size source.
-  const crop = shapeCrop(bbox);
+  // Sharp crop of the animal and some background straight from the full-size source.
+  const crop = shapeWindow(bbox);
   const f = frames[p.id];
   const px = 1600 / 1200;
   const left = Math.max(0, Math.round((crop.x * px + f.left) / f.scale));

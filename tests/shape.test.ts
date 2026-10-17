@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { cellCoverage, planShaped } from '../src/jigsaw/shape';
+import { cellCoverage, planShaped, shapeWindow } from '../src/jigsaw/shape';
 import { JigsawEngine } from '../src/jigsaw/engine';
 import { makeRng } from '../src/core/rng';
 
@@ -52,5 +52,22 @@ describe('shaped puzzles', () => {
     // Solving every group finishes the puzzle.
     for (const g of [...e.groups]) e.drop(g);
     expect(e.complete).toBe(true);
+  });
+});
+
+describe('shapeWindow', () => {
+  const inside = (w: { x: number; y: number; w: number; h: number }, b: number[]) =>
+    w.x >= 0 && w.y >= 0 && w.x + w.w <= 1200 + 1e-6 && w.y + w.h <= 900 + 1e-6 && w.x <= b[0] && w.y <= b[1] && w.x + w.w >= b[0] + b[2] && w.y + w.h >= b[1] + b[3];
+
+  it('keeps 4:3 and contains the animal', () => {
+    for (const b of [[546, 340, 372, 190], [40, 205, 903, 608], [0, 250, 1125, 530], [540, 126, 563, 484], [353, 158, 600, 279]]) {
+      const w = shapeWindow(b, 1200, 900);
+      expect(w.w / w.h).toBeCloseTo(4 / 3, 5);
+      expect(inside(w, b)).toBe(true);
+    }
+  });
+
+  it('uses the whole frame when the animal fills it', () => {
+    expect(shapeWindow([20, 10, 1160, 880], 1200, 900)).toEqual({ x: 0, y: 0, w: 1200, h: 900 });
   });
 });

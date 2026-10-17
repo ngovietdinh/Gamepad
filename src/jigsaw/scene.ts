@@ -707,8 +707,20 @@ export class JigsawScene implements InputHandler {
       this.drawShapedBoard(ctx, this.shapePath);
       return;
     }
+    this.drawTray(ctx);
+    ctx.fillStyle = '#140605';
+    ctx.fillRect(0, 0, this.bw, this.bh);
+    if (this.ghost) {
+      ctx.save();
+      ctx.globalAlpha = 0.2;
+      ctx.drawImage(this.image, 0, 0, this.bw, this.bh);
+      ctx.restore();
+    }
+  }
+
+  /** Lacquer tray with a soft drop shadow and a gold rim. */
+  private drawTray(ctx: CanvasRenderingContext2D) {
     const frame = 14;
-    // Lacquer tray with a soft drop shadow.
     ctx.save();
     ctx.shadowColor = 'rgba(0,0,0,0.5)';
     ctx.shadowBlur = 40 * this.cam.zoom * this.dpr;
@@ -723,25 +735,17 @@ export class JigsawScene implements InputHandler {
     ctx.strokeStyle = g;
     ctx.lineWidth = 3;
     ctx.strokeRect(-frame / 2, -frame / 2, this.bw + frame, this.bh + frame);
-    ctx.fillStyle = '#140605';
-    ctx.fillRect(0, 0, this.bw, this.bh);
-    if (this.ghost) {
-      ctx.save();
-      ctx.globalAlpha = 0.2;
-      ctx.drawImage(this.image, 0, 0, this.bw, this.bh);
-      ctx.restore();
-    }
   }
 
-  /** A recess in the shape of the animal, with an inlaid gold outline. */
+  /**
+   * The photo stays whole around the animal; only the animal is cut out,
+   * leaving a recess in its shape with an inlaid gold outline.
+   */
   private drawShapedBoard(ctx: CanvasRenderingContext2D, shape: Path2D) {
-    ctx.save();
-    ctx.shadowColor = 'rgba(0,0,0,0.55)';
-    ctx.shadowBlur = 30 * this.cam.zoom * this.dpr;
-    ctx.shadowOffsetY = 10 * this.cam.zoom * this.dpr;
+    this.drawTray(ctx);
+    ctx.drawImage(this.image, 0, 0, this.bw, this.bh);
     ctx.fillStyle = '#140605';
     ctx.fill(shape);
-    ctx.restore();
     if (this.ghost) {
       ctx.save();
       ctx.clip(shape);
@@ -749,6 +753,15 @@ export class JigsawScene implements InputHandler {
       ctx.drawImage(this.image, 0, 0, this.bw, this.bh);
       ctx.restore();
     }
+    // Inner shadow so the recess reads as cut into the photo.
+    ctx.save();
+    ctx.clip(shape);
+    ctx.shadowColor = 'rgba(0,0,0,0.85)';
+    ctx.shadowBlur = 18 * this.cam.zoom * this.dpr;
+    ctx.strokeStyle = '#000';
+    ctx.lineWidth = 8;
+    ctx.stroke(shape);
+    ctx.restore();
     const g = ctx.createLinearGradient(0, 0, this.bw, this.bh);
     g.addColorStop(0, '#f0d58a');
     g.addColorStop(0.5, '#a87a2c');

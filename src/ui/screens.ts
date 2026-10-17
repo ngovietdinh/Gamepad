@@ -43,7 +43,7 @@ export function homeScreen(router: Router) {
     h('div', { class: 'home-inner' }, h(
       'header',
       { class: 'home-head' },
-      h('div', {}, h('h1', { class: 'wordmark' }, 'Mảnh Ghép'), h('p', { class: 'lede' }, 'Ghép ảnh động vật thật theo đúng dáng con vật, tranh sơn mài và tangram, làm riêng cho iPad và Apple Pencil.')),
+      h('div', {}, h('h1', { class: 'wordmark' }, 'Mảnh Ghép'), h('p', { class: 'lede' }, 'Ghép ảnh động vật thật theo đúng dáng con vật, tranh sơn mài và tangram, làm riêng cho iPad và Apple Pencil.'), h('p', { class: 'byline' }, 'Tạo bởi ', h('b', {}, 'dinhngoviet'))),
       h('button', { class: 'icon-btn', 'aria-label': 'Cài đặt', html: icons.settings, onclick: () => openSettings(router) }),
     ),
     h(
@@ -458,16 +458,14 @@ function openPhotoSheet(router: Router, p: Photo) {
         outline.width = 1200;
         outline.height = 900;
         const ctx = outline.getContext('2d')!;
-        ctx.fillStyle = 'rgba(20,6,4,0.78)';
-        ctx.fillRect(0, 0, 1200, 900);
         const path = new Path2D();
         for (const poly of shape.polys) {
           for (let i = 0; i < poly.length; i += 2) (i ? path.lineTo(poly[i], poly[i + 1]) : path.moveTo(poly[i], poly[i + 1]));
           path.closePath();
         }
-        ctx.globalCompositeOperation = 'destination-out';
-        ctx.fill(path);
-        ctx.globalCompositeOperation = 'source-over';
+        // The background stays as it is; only the animal gets cut into pieces.
+        ctx.shadowColor = 'rgba(0,0,0,0.7)';
+        ctx.shadowBlur = 10;
         ctx.strokeStyle = '#f3dc98';
         ctx.lineWidth = 4;
         ctx.lineJoin = 'round';
@@ -527,7 +525,7 @@ function openPhotoSheet(router: Router, p: Photo) {
       h('a', { class: 'credit', href: p.credit.source, target: '_blank', rel: 'noopener' }, creditLine(p)),
       sizes,
       canShape
-        ? h('div', { class: 'setting' }, h('div', {}, h('div', { class: 't' }, 'Theo dáng con vật'), h('div', { class: 'd' }, 'Chỉ ghép con vật, mép bàn chạy theo đường viền')), shp)
+        ? h('div', { class: 'setting' }, h('div', {}, h('div', { class: 't' }, 'Theo dáng con vật'), h('div', { class: 'd' }, 'Giữ nguyên nền ảnh, chỉ ghép phần con vật')), shp)
         : null,
       h('div', { class: 'setting' }, h('div', {}, h('div', { class: 't' }, 'Xoay mảnh'), h('div', { class: 'd' }, 'Mảnh bị xoay ngẫu nhiên, chạm để xoay lại')), rot),
       h(

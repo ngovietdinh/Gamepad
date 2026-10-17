@@ -116,13 +116,21 @@ export function planShaped(polys: Polys, w: number, h: number, target: number): 
   return best!;
 }
 
-/** Bounding box of the silhouette with a margin, clamped to the photo frame. */
-export function shapeCrop(bbox: number[], frameW: number, frameH: number, margin = 0.04) {
+/**
+ * A 4:3 window around the silhouette with room for some of the photo's
+ * background, shifted (not shrunk) to stay inside the frame.
+ */
+export function shapeWindow(bbox: number[], frameW: number, frameH: number, margin = 0.16) {
   const [x, y, w, h] = bbox;
   const m = Math.max(w, h) * margin;
-  const x0 = Math.max(0, x - m);
-  const y0 = Math.max(0, y - m);
-  const x1 = Math.min(frameW, x + w + m);
-  const y1 = Math.min(frameH, y + h + m);
-  return { x: x0, y: y0, w: x1 - x0, h: y1 - y0 };
+  let ww = w + m * 2;
+  let wh = h + m * 2;
+  if (ww / wh > 4 / 3) wh = (ww * 3) / 4;
+  else ww = (wh * 4) / 3;
+  if (ww > frameW || wh > frameH) {
+    ww = Math.min(frameW, (frameH * 4) / 3);
+    wh = (ww * 3) / 4;
+  }
+  const clamp = (v: number, hi: number) => Math.min(Math.max(v, 0), hi);
+  return { x: clamp(x + w / 2 - ww / 2, frameW - ww), y: clamp(y + h / 2 - wh / 2, frameH - wh), w: ww, h: wh };
 }

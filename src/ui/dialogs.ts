@@ -96,6 +96,7 @@ export function openSettings(router: Router, onChange?: () => void) {
         { class: 'muted', style: 'font-size:14px;margin:18px 0' },
         'Mẹo: dùng Apple Pencil để cầm mảnh chính xác, nhấn mạnh tay thì mảnh nhấc cao hơn. Hai ngón tay để phóng to hoặc kéo bàn chơi.',
       ),
+      h('p', { class: 'muted', style: 'font-size:14px;margin:0 0 18px' }, 'Mảnh Ghép — tạo bởi ', h('b', {}, 'dinhngoviet'), '.'),
       h('div', { class: 'actions' }, PHOTOS.length ? h('button', { class: 'btn quiet', onclick: openCredits }, 'Nguồn ảnh') : null, reset),
     ),
   );
