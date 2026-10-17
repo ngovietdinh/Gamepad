@@ -6,6 +6,7 @@ import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 
 const API = 'https://commons.wikimedia.org/w/api.php';
 const UA = 'ManhGhep/1.0 (puzzle game; https://github.com/ngovietdinh/Gamepad)';
+const MAX = 16;
 const FREE = /^(CC0|Public domain|PD|CC BY(-SA)? [0-9.]+|CC-BY(-SA)?-[0-9.]+)/i;
 const species = JSON.parse(readFileSync(new URL('./species.json', import.meta.url), 'utf8'));
 const outFile = new URL('./candidates.json', import.meta.url);
@@ -33,7 +34,7 @@ async function search(q, cat) {
     generator: 'search',
     gsrsearch: `${q} incategory:${cat} filetype:bitmap`,
     gsrnamespace: '6',
-    gsrlimit: '20',
+    gsrlimit: '40',
     prop: 'imageinfo',
     iiprop: 'url|size|mime|extmetadata',
     iiurlwidth: '400',
@@ -57,14 +58,15 @@ async function search(q, cat) {
     })
     .filter((x) => {
       const a = x.width / x.height;
-      return x.mime === 'image/jpeg' && a >= 1.2 && a <= 1.9 && x.width >= 2000 && FREE.test(x.license);
+      // Wide enough for a 4:3 board; full-body selection happens later in pick.mjs.
+      return x.mime === 'image/jpeg' && a >= 1.1 && a <= 2.0 && x.width >= 2000 && FREE.test(x.license);
     });
 }
 
 for (const s of species) {
-  if (result[s.id]?.length >= 4) continue;
-  const seen = new Set();
-  const list = [];
+  if (result[s.id]?.length >= MAX) continue;
+  const list = [...(result[s.id] ?? [])];
+  const seen = new Set(list.map((x) => x.title));
   for (const cat of ['Featured_pictures_on_Wikimedia_Commons', 'Quality_images']) {
     try {
       for (const c of await search(s.q, cat)) {
@@ -77,9 +79,9 @@ for (const s of species) {
       console.log(s.id, cat, e.message);
     }
     await sleep(1200);
-    if (list.length >= 8) break;
+    if (list.length >= MAX) break;
   }
-  result[s.id] = list.slice(0, 8);
+  result[s.id] = list.slice(0, MAX);
   console.log(`${s.id}: ${result[s.id].length}`);
   writeFileSync(outFile, JSON.stringify(result, null, 1));
 }

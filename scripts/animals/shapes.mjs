@@ -6,6 +6,7 @@
 // Run: node scripts/animals/shapes.mjs   (after build.mjs and masks.mjs)
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import sharp from 'sharp';
+import { createHash } from 'node:crypto';
 
 const root = new URL('../../', import.meta.url);
 const manifest = JSON.parse(readFileSync(new URL('src/photos/manifest.json', root), 'utf8'));
@@ -210,7 +211,9 @@ for (const p of manifest) {
   const width = Math.min(f.width - left, Math.round((crop.w * px) / f.scale));
   const height = Math.min(f.height - top, Math.round((crop.h * px) / f.scale));
   const long = Math.min(1600, Math.max(width, height));
-  const src = readFileSync(new URL(`scripts/animals/.cache/${p.id}.jpg`, root));
+  const title = selection.find((x) => x.id === p.id).title;
+  const key = createHash('sha1').update(title).digest('hex').slice(0, 16);
+  const src = readFileSync(new URL(`scripts/animals/.cache/${p.id}-${key}.jpg`, root));
   await sharp(src)
     .rotate()
     .extract({ left, top, width, height })

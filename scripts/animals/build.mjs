@@ -7,6 +7,7 @@
 // Run: NODE_USE_ENV_PROXY=1 node scripts/animals/build.mjs [--force]
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import sharp from 'sharp';
+import { createHash } from 'node:crypto';
 
 const UA = 'ManhGhep/1.0 (puzzle game; https://github.com/ngovietdinh/Gamepad)';
 const root = new URL('../../', import.meta.url);
@@ -14,26 +15,30 @@ const force = process.argv.includes('--force');
 const selection = JSON.parse(readFileSync(new URL('./selection.json', import.meta.url), 'utf8'));
 const candidates = JSON.parse(readFileSync(new URL('./candidates.json', import.meta.url), 'utf8'));
 const byTitle = new Map(Object.values(candidates).flat().map((c) => [c.title, c]));
+const picksFile = new URL('./picks.json', import.meta.url);
+const picks = existsSync(picksFile) ? JSON.parse(readFileSync(picksFile, 'utf8')) : {};
 const framesFile = new URL('./frames.json', import.meta.url);
 const frames = existsSync(framesFile) ? JSON.parse(readFileSync(framesFile, 'utf8')) : {};
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 for (const d of ['public/photos/', 'src/photos/', 'scripts/animals/.cache/']) mkdirSync(new URL(d, root), { recursive: true });
 
 async function get(url) {
-  for (let i = 0; i < 8; i++) {
+  for (let i = 0; i < 12; i++) {
     const r = await fetch(url, { headers: { 'User-Agent': UA } });
     if (r.status === 429) {
-      await sleep(5000 * (i + 1));
+      await sleep(Math.min(60000, 5000 * (i + 1)));
       continue;
     }
     return r;
   }
-  throw new Error('rate limited ' + url);
+  return new Response(null, { status: 429 });
 }
 
 /** Largest available rendition (3840px, else 2560, else 1920), cached on disk. */
 export async function source(c, id) {
-  const file = new URL(`scripts/animals/.cache/${id}.jpg`, root);
+  // Cache by file title so changing a species' photo never reuses the old download.
+  const key = createHash('sha1').update(c.title).digest('hex').slice(0, 16);
+  const file = new URL(`scripts/animals/.cache/${id}-${key}.jpg`, root);
   if (existsSync(file)) return readFileSync(file);
   const thumb = c.thumb.replace('thumb.wikimedia.org', 'upload.wikimedia.org').replace(/\?.*/, '');
   for (const w of [3840, 2560, 1920]) {
@@ -63,20 +68,24 @@ for (const s of selection) {
   if (force || !existsSync(out) || !existsSync(thumb) || !frames[s.id]) {
     const buf = await source(c, s.id);
     const meta = await sharp(buf).rotate().metadata();
-    const pos = s.focus ?? 'attention';
-    const { data, info } = await sharp(buf).rotate().resize(1600, 1200, { fit: 'cover', position: pos }).toBuffer({ resolveWithObject: true });
+    const W = meta.width;
+    const H = meta.height;
+    // 4:3 window centred on the animal (bbox from pick.mjs), so nothing of it is cut.
+    const winW = Math.min(W, Math.round((H * 4) / 3));
+    const winH = Math.min(H, Math.round((W * 3) / 4));
+    const bb = picks[s.id]?.find((r) => r.title === s.title)?.bbox;
+    const cx = bb ? (bb[0] + bb[2] / 2) * W : W / 2;
+    const cy = bb ? (bb[1] + bb[3] / 2) * H : H / 2;
+    const left = Math.round(Math.min(Math.max(0, cx - winW / 2), W - winW));
+    const top = Math.round(Math.min(Math.max(0, cy - winH / 2), H - winH));
+    const data = await sharp(buf).rotate().extract({ left, top, width: winW, height: winH }).resize(1600, 1200).toBuffer();
     // Remember the crop so silhouettes can be cut again from the full-size source.
-    const scale = Math.max(1600 / meta.width, 1200 / meta.height);
-    frames[s.id] = {
-      scale,
-      left: Math.abs(info.cropOffsetLeft ?? (meta.width * scale - 1600) / 2),
-      top: Math.abs(info.cropOffsetTop ?? (meta.height * scale - 1200) / 2),
-      width: meta.width,
-      height: meta.height,
-    };
+    const scale = 1600 / winW;
+    frames[s.id] = { scale, left: left * scale, top: top * scale, width: W, height: H };
+    writeFileSync(framesFile, JSON.stringify(frames, null, 1));
     await sharp(data).webp({ quality: 82 }).toFile(out.pathname);
     await sharp(data).resize(480, 360).webp({ quality: 74 }).toFile(thumb.pathname);
-    console.log('ok', s.id, `${meta.width}x${meta.height}`);
+    console.log('ok', s.id, `${W}x${H}`);
   }
   manifest.push({
     id: s.id,

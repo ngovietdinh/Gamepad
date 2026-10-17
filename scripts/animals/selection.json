@@ -3,302 +3,352 @@
   "id": "ho",
   "name": "Hổ",
   "group": "thu",
-  "title": "File:Tiger-2.jpg"
+  "title": "File:Panthera tigris altaica 13 - Buffalo Zoo.jpg",
+  "pin": "File:Panthera tigris altaica 13 - Buffalo Zoo.jpg"
  },
  {
   "id": "su-tu",
   "name": "Sư tử",
   "group": "thu",
-  "title": "File:002 The lion king Snyggve in the Serengeti National Park Photo by Giles Laurent.jpg"
+  "title": "File:020 The lion king Snyggve in the Serengeti National Park Photo by Giles Laurent.jpg",
+  "pin": "File:020 The lion king Snyggve in the Serengeti National Park Photo by Giles Laurent.jpg"
  },
  {
   "id": "bao-hoa-mai",
   "name": "Báo hoa mai",
   "group": "thu",
-  "title": "File:001 Juvenile leopard in the Serengeti National Park Photo by Giles Laurent.jpg"
+  "title": "File:Indian leopard in Jawai Bandh April 2025 by Tisha Mukherjee 02.jpg",
+  "pin": "File:Indian leopard in Jawai Bandh April 2025 by Tisha Mukherjee 02.jpg"
  },
  {
   "id": "bao-san",
   "name": "Báo săn",
   "group": "thu",
-  "title": "File:Cheetah (Acinonyx jubatus) female 2.jpg"
+  "title": "File:Masai Mara National Reserve 07 - cheetah (Acinonyx jubatus).jpg",
+  "pin": "File:Masai Mara National Reserve 07 - cheetah (Acinonyx jubatus).jpg"
  },
  {
   "id": "voi",
   "name": "Voi châu Phi",
   "group": "thu",
-  "title": "File:Elefante africano de sabana (Loxodonta africana), parque nacional Kruger, Sudáfrica, 2018-07-25, DD 06.jpg"
+  "title": "File:178 Male African bush elephant in Etosha National Park Photo by Giles Laurent.jpg",
+  "pin": "File:178 Male African bush elephant in Etosha National Park Photo by Giles Laurent.jpg"
  },
  {
   "id": "huou-cao-co",
   "name": "Hươu cao cổ",
   "group": "thu",
-  "title": "File:Three giraffes 01.jpg"
+  "title": "File:Giraffa camelopardalis angolensis (courting).jpg",
+  "pin": "File:Giraffa camelopardalis angolensis (courting).jpg"
  },
  {
   "id": "ngua-van",
   "name": "Ngựa vằn",
   "group": "thu",
-  "title": "File:Plains zebras (Equus quagga) Maputo.jpg"
+  "title": "File:Equus quagga burchellii - Etosha, 2014.jpg",
+  "pin": "File:Equus quagga burchellii - Etosha, 2014.jpg"
  },
  {
   "id": "gau-nau",
   "name": "Gấu nâu",
   "group": "thu",
-  "title": "File:Ведмідь у лісі.jpg"
+  "title": "File:Kamchatka Brown Bear near Dvuhyurtochnoe on 2015-07-23.jpg",
+  "pin": "File:Kamchatka Brown Bear near Dvuhyurtochnoe on 2015-07-23.jpg"
  },
  {
   "id": "gau-bac-cuc",
   "name": "Gấu Bắc Cực",
   "group": "thu",
-  "title": "File:Polar bear (Ursus) maritimus female with its cub, Svalbard (2).jpg"
+  "title": "File:Polar bear after unlucky hunt for a seal.jpg",
+  "pin": "File:Polar bear after unlucky hunt for a seal.jpg"
  },
  {
   "id": "gau-truc-do",
   "name": "Gấu trúc đỏ",
   "group": "thu",
-  "title": "File:Red Panda (24986761703).jpg"
+  "title": "File:Ailurus fulgens (Panda roux) - 128.jpg",
+  "pin": "File:Ailurus fulgens (Panda roux) - 128.jpg"
  },
  {
   "id": "soi",
   "name": "Sói xám",
   "group": "thu",
-  "title": "File:Scandinavian grey wolf Canis lupus.jpg"
+  "title": "File:Mexican Wolf 2 yfb-edit 1.jpg",
+  "pin": "File:Mexican Wolf 2 yfb-edit 1.jpg"
  },
  {
   "id": "cao-do",
   "name": "Cáo đỏ",
   "group": "thu",
-  "title": "File:Portrait of a red fox in Rautas fjällurskog.jpg"
+  "title": "File:Red fox catches a vole - Tolyatti, Russia.jpg",
+  "pin": "File:Red fox catches a vole - Tolyatti, Russia.jpg"
  },
  {
   "id": "khi-dot",
   "name": "Khỉ đột núi",
   "group": "thu",
-  "title": "File:Mountain gorilla (Gorilla beringei beringei) female 2.jpg"
+  "title": "File:Mountain gorilla (Gorilla beringei beringei) female 2.jpg",
+  "pin": "File:Mountain gorilla (Gorilla beringei beringei) female 2.jpg"
  },
  {
   "id": "duoi-uoi",
-  "name": "Đười ươi Sumatra",
+  "name": "Đười ươi",
   "group": "thu",
-  "title": "File:Pongo abelii - Tierpark Hagenbeck 01.jpg"
+  "title": "File:Pongo abelii - Tierpark Hagenbeck 02.jpg",
+  "pin": "File:Pongo abelii - Tierpark Hagenbeck 02.jpg"
  },
  {
   "id": "huou-do",
   "name": "Hươu đỏ",
   "group": "thu",
-  "title": "File:RedDeerStag.jpg"
+  "title": "File:Cervus elaphus Luc Viatour 2.jpg",
+  "pin": "File:Cervus elaphus Luc Viatour 2.jpg"
  },
  {
   "id": "soc-do",
   "name": "Sóc đỏ",
   "group": "thu",
-  "title": "File:Red squirrel (21808).jpg"
+  "title": "File:Richardson's red squirrel (Tamiasciurus hudsonicus richardsoni) Moraine Lake.jpg",
+  "pin": "File:Richardson's red squirrel (Tamiasciurus hudsonicus richardsoni) Moraine Lake.jpg"
  },
  {
   "id": "te-giac",
   "name": "Tê giác",
   "group": "thu",
-  "title": "File:075 White rhinoceros mother and her newborn baby in the Kalahari Desert of Namibia Photo by Giles Laurent.jpg"
+  "title": "File:109 Male White rhinoceros walking in the Kalahari Desert of Namibia Photo by Giles Laurent.jpg",
+  "pin": "File:109 Male White rhinoceros walking in the Kalahari Desert of Namibia Photo by Giles Laurent.jpg"
  },
  {
   "id": "ha-ma",
   "name": "Hà mã",
   "group": "thu",
-  "title": "File:Hippopotamus amphibius Whipsnade Zoo.jpg"
+  "title": "File:Hipopótamo (Hippopotamus amphibius), parque nacional de Chobe, Botsuana, 2018-07-28, DD 82.jpg",
+  "pin": "File:Hipopótamo (Hippopotamus amphibius), parque nacional de Chobe, Botsuana, 2018-07-28, DD 82.jpg"
  },
  {
   "id": "cay-meerkat",
   "name": "Cầy meerkat",
   "group": "thu",
-  "title": "File:Meerkat (Suricata suricatta) Tswalu.jpg"
+  "title": "File:Meerkat (Suricata suricatta) Tswalu.jpg",
+  "pin": "File:Meerkat (Suricata suricatta) Tswalu.jpg"
  },
  {
   "id": "gau-koala",
   "name": "Gấu koala",
   "group": "thu",
-  "title": "File:Koala in Zoo Duisburg.jpg"
+  "title": "File:Koala in Zoo Duisburg.jpg",
+  "pin": "File:Koala in Zoo Duisburg.jpg"
  },
  {
   "id": "dai-bang",
-  "name": "Đại bàng đầu trắng non",
+  "name": "Đại bàng đầu trắng",
   "group": "chim",
-  "title": "File:Juvenile Bald Eagle (head).jpg"
+  "title": "File:Bald eagle in Alaska 2016-3.jpg",
+  "pin": "File:Bald eagle in Alaska 2016-3.jpg"
  },
  {
   "id": "cu-tuyet",
   "name": "Cú tuyết",
   "group": "chim",
-  "title": "File:Búho nival (Bubo scandiacus), Arcos de la Frontera, Cádiz, España, 2015-12-08, DD 03.JPG"
+  "title": "File:Schneeeule im Tierpark Sonneberg 7.jpg",
+  "pin": "File:Schneeeule im Tierpark Sonneberg 7.jpg"
  },
  {
   "id": "boi-ca",
   "name": "Chim bói cá",
   "group": "chim",
-  "title": "File:Alcedo atthis - Riserve naturali e aree contigue della fascia fluviale del Po.jpg"
+  "title": "File:Common kingfisher in Japan, January 2019 - 谷崎7303.jpg",
+  "pin": "File:Common kingfisher in Japan, January 2019 - 谷崎7303.jpg"
  },
  {
   "id": "hong-hac",
   "name": "Hồng hạc",
   "group": "chim",
-  "title": "File:Phoenicopterus ruber in São Paulo Zoo.jpg"
+  "title": "File:010 Greater flamingos male and female in the Camargue during mating season Photo by Giles Laurent.jpg",
+  "pin": "File:010 Greater flamingos male and female in the Camargue during mating season Photo by Giles Laurent.jpg"
  },
  {
-  "id": "cong",
-  "name": "Chim công",
+  "id": "uyen-uong",
+  "name": "Vịt uyên ương",
   "group": "chim",
-  "title": "File:Paonroue.JPG",
-  "shape": false
+  "title": "File:Mandarin duck (Aix galericulata) on ice 01.jpg",
+  "previous": "",
+  "pin": "File:Mandarin duck (Aix galericulata) on ice 01.jpg"
  },
  {
   "id": "vet-macaw",
   "name": "Vẹt đuôi dài",
   "group": "chim",
-  "title": "File:Red-and-green macaw (Ara chloropterus) juvenile.JPG"
+  "title": "File:Ara ararauna Luc Viatour.jpg",
+  "pin": "File:Ara ararauna Luc Viatour.jpg"
  },
  {
   "id": "chim-canh-cut",
-  "name": "Chim cánh cụt vua",
+  "name": "Chim cánh cụt hoàng đế",
   "group": "chim",
-  "title": "File:King penguin Aptenodytes patagonicus-4932.jpg"
+  "title": "File:Penguin in Antarctica jumping out of the water.jpg",
+  "pin": "File:Penguin in Antarctica jumping out of the water.jpg"
  },
  {
   "id": "chim-ruoi",
   "name": "Chim ruồi",
   "group": "chim",
-  "title": "File:Vervain hummingbird (Mellisuga minima).jpg"
+  "title": "File:Colibrí Cola de Oro (Golden-tailed Sapphire Hummingbird) Bigger File.jpg",
+  "pin": "File:Colibrí Cola de Oro (Golden-tailed Sapphire Hummingbird) Bigger File.jpg"
  },
  {
   "id": "diec-xam",
   "name": "Diệc xám",
   "group": "chim",
-  "title": "File:Ardea cinerea Luc Viatour.jpg"
+  "title": "File:Ardea cinerea qtl3.jpg",
+  "pin": "File:Ardea cinerea qtl3.jpg"
  },
  {
   "id": "thien-nga",
   "name": "Thiên nga",
   "group": "chim",
-  "title": "File:Mute swans (Cygnus olor) and cygnets.jpg"
+  "title": "File:093 Wild Mute swan at Lake Geneva during sunset Photo by Giles Laurent.jpg",
+  "pin": "File:093 Wild Mute swan at Lake Geneva during sunset Photo by Giles Laurent.jpg"
  },
  {
   "id": "chim-toucan",
   "name": "Chim toucan",
   "group": "chim",
-  "title": "File:006 Toco toucan in Encontro das Águas State Park Photo by Giles Laurent.jpg"
+  "title": "File:006 Toco toucan in Encontro das Águas State Park Photo by Giles Laurent.jpg",
+  "pin": "File:006 Toco toucan in Encontro das Águas State Park Photo by Giles Laurent.jpg"
  },
  {
   "id": "hai-anh",
   "name": "Hải âu cổ rụt",
   "group": "chim",
-  "title": "File:Papageitaucher Fratercula arctica.jpg"
+  "title": "File:Puffin Latrabjarg Iceland.jpg",
+  "pin": "File:Puffin Latrabjarg Iceland.jpg"
  },
  {
   "id": "tac-ke-hoa",
-  "name": "Tắc kè hoa sừng ngắn",
+  "name": "Tắc kè hoa",
   "group": "bosat",
-  "title": "File:Short-horned chameleon (Calumma brevicorne) female Andasibe.jpg"
+  "title": "File:Panther chameleon (Furcifer pardalis) male Nosy Be.jpg",
+  "pin": "File:Panther chameleon (Furcifer pardalis) male Nosy Be.jpg"
  },
  {
-  "id": "ca-sau",
-  "name": "Cá sấu",
+  "id": "rua-can",
+  "name": "Rùa cạn Galápagos",
   "group": "bosat",
-  "title": "File:Crocodylus acutus in La Manzanilla.jpg"
+  "title": "File:Tortuga gigante de San Cristóbal (Chelonoidis chathamensis), isla Santa Cruz, islas Galápagos, Ecuador, 2015-07-26, DD 13.JPG",
+  "previous": "",
+  "pin": "File:Tortuga gigante de San Cristóbal (Chelonoidis chathamensis), isla Santa Cruz, islas Galápagos, Ecuador, 2015-07-26, DD 13.JPG"
  },
  {
   "id": "rua-bien",
   "name": "Rùa biển xanh",
   "group": "bosat",
-  "title": "File:Total internal reflection of Chelonia mydas.jpg"
+  "title": "File:Green sea turtle (Chelonia mydas) Moorea.jpg",
+  "pin": "File:Green sea turtle (Chelonia mydas) Moorea.jpg"
  },
  {
   "id": "ech-mat-do",
   "name": "Ếch cây mắt đỏ",
   "group": "bosat",
-  "title": "File:Red eyed tree frog edit2.jpg"
+  "title": "File:Red eyed tree frog edit2.jpg",
+  "pin": "File:Red eyed tree frog edit2.jpg"
  },
  {
   "id": "tran-xanh",
   "name": "Trăn cây xanh",
   "group": "bosat",
-  "title": "File:Green Tree Python 0A2A0428.jpg"
+  "title": "File:Green Tree Python 0A2A0428.jpg",
+  "pin": "File:Green Tree Python 0A2A0428.jpg"
  },
  {
   "id": "ky-nhong",
   "name": "Kỳ nhông",
   "group": "bosat",
-  "title": "File:Iguana V.jpg"
+  "title": "File:Iguana iguana Portoviejo 01.jpg",
+  "pin": "File:Iguana iguana Portoviejo 01.jpg"
  },
  {
   "id": "ca-heo",
   "name": "Cá heo",
   "group": "nuoc",
-  "title": "File:Tursiops truncatus 01.jpg"
+  "title": "File:Eilat Dolphin Reef (2).jpg",
+  "pin": "File:Eilat Dolphin Reef (2).jpg"
  },
  {
   "id": "ca-voi",
   "name": "Cá voi lưng gù",
   "group": "nuoc",
-  "title": "File:Humpback whale (Megaptera novaeangliae) calf Moorea 2.jpg"
+  "title": "File:Humpback whale (Megaptera novaeangliae) calf Moorea 2.jpg",
+  "pin": "File:Humpback whale (Megaptera novaeangliae) calf Moorea 2.jpg"
  },
  {
   "id": "ca-he",
   "name": "Cá hề",
   "group": "nuoc",
-  "title": "File:Amphiprion ocellaris (Clown anemonefish) by Nick Hobgood.jpg"
+  "title": "File:Pez payaso (Amphiprion bicinctus) en una anémona burbuja (Entacmaea quadricolor), mar Rojo, Egipto, 2023-04-17, DD 41.jpg",
+  "pin": "File:Pez payaso (Amphiprion bicinctus) en una anémona burbuja (Entacmaea quadricolor), mar Rojo, Egipto, 2023-04-17, DD 41.jpg"
  },
  {
   "id": "sua",
-  "name": "Sứa bờm sư tử",
+  "name": "Sứa",
   "group": "nuoc",
-  "title": "File:Lion's mane jellyfish in Gullmarn fjord at Sämstad 8.jpg"
+  "title": "File:Sideview of contracted bluefire jellyfish in Brofjorden at Sandvik 2.jpg",
+  "pin": "File:Sideview of contracted bluefire jellyfish in Brofjorden at Sandvik 2.jpg"
  },
  {
   "id": "bach-tuoc",
   "name": "Bạch tuộc",
   "group": "nuoc",
-  "title": "File:Octopus vulgaris 03.jpg"
+  "title": "File:Octopus vulgaris 03.jpg",
+  "pin": "File:Octopus vulgaris 03.jpg"
  },
  {
   "id": "hai-cau",
   "name": "Hải cẩu",
   "group": "nuoc",
-  "title": "File:Harbor seal (Phoca vitulina) at Magdalen fjord, Svalbard (1).jpg"
+  "title": "File:Common seal (Phoca vitulina).jpg",
+  "pin": "File:Common seal (Phoca vitulina).jpg"
  },
  {
   "id": "rai-ca-bien",
   "name": "Rái cá biển",
   "group": "nuoc",
-  "title": "File:Sea-otter-morro-bay 13.jpg"
+  "title": "File:Northern sea otter (Enhydra lutris kenyoni) female with pup Quatsino 2.jpg",
+  "pin": "File:Northern sea otter (Enhydra lutris kenyoni) female with pup Quatsino 2.jpg"
  },
  {
   "id": "buom",
   "name": "Bướm phượng",
   "group": "contrung",
-  "title": "File:Papilio machaon Mitterbach 01.jpg"
+  "title": "File:Papilio machaon Mitterbach 01.jpg",
+  "pin": "File:Papilio machaon Mitterbach 01.jpg"
  },
  {
   "id": "chuon-chuon",
-  "name": "Chuồn chuồn đỏ",
+  "name": "Chuồn chuồn bốn đốm",
   "group": "contrung",
-  "title": "File:Sympetrum flaveolum - side (aka).jpg"
+  "title": "File:Four-spotted chaser (Libellula quadrimaculata) female dorsal.jpg",
+  "pin": "File:Four-spotted chaser (Libellula quadrimaculata) female dorsal.jpg"
  },
  {
   "id": "bo-rua",
   "name": "Bọ rùa bảy chấm",
   "group": "contrung",
-  "title": "File:Siebenpunkt-Marienkäfer (Coccinella septempunctata) auf Blüte im FFH-Gebiet \"Viernheimer Waldheide und angrenzende Flächen\".jpg"
+  "title": "File:Siebenpunkt-Marienkäfer (Coccinella septempunctata) auf Blüte im FFH-Gebiet \"Viernheimer Waldheide und angrenzende Flächen\".jpg",
+  "pin": "File:Siebenpunkt-Marienkäfer (Coccinella septempunctata) auf Blüte im FFH-Gebiet \"Viernheimer Waldheide und angrenzende Flächen\".jpg"
  },
  {
   "id": "ong-mat",
   "name": "Ong mật",
   "group": "contrung",
-  "title": "File:Apis mellifera - Senecio paludosus - Keila.jpg",
-  "shape": false
+  "title": "File:Apis mellifera carnica worker hive entrance 3.jpg",
+  "pin": "File:Apis mellifera carnica worker hive entrance 3.jpg"
  },
  {
   "id": "bo-ngua",
   "name": "Bọ ngựa",
   "group": "contrung",
-  "title": "File:European praying mantis (Mantis religiosa) green female Dobruja.jpg"
+  "title": "File:European praying mantis (Mantis religiosa) green female Dobruja.jpg",
+  "pin": "File:European praying mantis (Mantis religiosa) green female Dobruja.jpg"
  }
 ]
