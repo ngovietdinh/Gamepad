@@ -220,6 +220,7 @@ export function photoPlay(router: Router, params: string[]): View | HTMLElement 
     return h('div');
   }
   let img: HTMLImageElement | null = null;
+  const nextPhoto = PHOTOS[PHOTOS.indexOf(photo) + 1];
   return runJigsaw(router, {
     title: photo.name,
     cols: size.cols,
@@ -230,6 +231,7 @@ export function photoPlay(router: Router, params: string[]): View | HTMLElement 
     par: jigsawPar({ index: 0, cols: size.cols, rows: size.rows, rotation }),
     back: '/jigsaw/photos',
     replay: `/play/photo/${photo.id}/${size.cols * size.rows}/${rotation ? 1 : 0}`,
+    next: nextPhoto ? `/play/photo/${nextPhoto.id}/${size.cols * size.rows}/${rotation ? 1 : 0}` : undefined,
     load: async () => {
       img = await loadImage(photoUrl(photo));
       const loaded = img;

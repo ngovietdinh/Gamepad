@@ -1,0 +1,302 @@
+[
+ {
+  "id": "ho",
+  "name": "Hổ",
+  "group": "thu",
+  "title": "File:Tiger-2.jpg"
+ },
+ {
+  "id": "su-tu",
+  "name": "Sư tử",
+  "group": "thu",
+  "title": "File:002 The lion king Snyggve in the Serengeti National Park Photo by Giles Laurent.jpg"
+ },
+ {
+  "id": "bao-hoa-mai",
+  "name": "Báo hoa mai",
+  "group": "thu",
+  "title": "File:001 Juvenile leopard in the Serengeti National Park Photo by Giles Laurent.jpg"
+ },
+ {
+  "id": "bao-san",
+  "name": "Báo săn",
+  "group": "thu",
+  "title": "File:Cheetah (Acinonyx jubatus) female 2.jpg"
+ },
+ {
+  "id": "voi",
+  "name": "Voi châu Phi",
+  "group": "thu",
+  "title": "File:Elefante africano de sabana (Loxodonta africana), parque nacional Kruger, Sudáfrica, 2018-07-25, DD 06.jpg"
+ },
+ {
+  "id": "huou-cao-co",
+  "name": "Hươu cao cổ",
+  "group": "thu",
+  "title": "File:Three giraffes 01.jpg"
+ },
+ {
+  "id": "ngua-van",
+  "name": "Ngựa vằn",
+  "group": "thu",
+  "title": "File:Plains zebras (Equus quagga) Maputo.jpg"
+ },
+ {
+  "id": "gau-nau",
+  "name": "Gấu nâu",
+  "group": "thu",
+  "title": "File:Ведмідь у лісі.jpg"
+ },
+ {
+  "id": "gau-bac-cuc",
+  "name": "Gấu Bắc Cực",
+  "group": "thu",
+  "title": "File:Polar bear (Ursus) maritimus female with its cub, Svalbard (2).jpg"
+ },
+ {
+  "id": "gau-truc-do",
+  "name": "Gấu trúc đỏ",
+  "group": "thu",
+  "title": "File:Red Panda (24986761703).jpg"
+ },
+ {
+  "id": "soi",
+  "name": "Sói xám",
+  "group": "thu",
+  "title": "File:Scandinavian grey wolf Canis lupus.jpg"
+ },
+ {
+  "id": "cao-do",
+  "name": "Cáo đỏ",
+  "group": "thu",
+  "title": "File:Portrait of a red fox in Rautas fjällurskog.jpg"
+ },
+ {
+  "id": "khi-dot",
+  "name": "Khỉ đột núi",
+  "group": "thu",
+  "title": "File:Mountain gorilla (Gorilla beringei beringei) female 2.jpg"
+ },
+ {
+  "id": "duoi-uoi",
+  "name": "Đười ươi Sumatra",
+  "group": "thu",
+  "title": "File:Pongo abelii - Tierpark Hagenbeck 01.jpg"
+ },
+ {
+  "id": "huou-do",
+  "name": "Hươu đỏ",
+  "group": "thu",
+  "title": "File:RedDeerStag.jpg"
+ },
+ {
+  "id": "soc-do",
+  "name": "Sóc đỏ",
+  "group": "thu",
+  "title": "File:Red squirrel (21808).jpg"
+ },
+ {
+  "id": "te-giac",
+  "name": "Tê giác",
+  "group": "thu",
+  "title": "File:075 White rhinoceros mother and her newborn baby in the Kalahari Desert of Namibia Photo by Giles Laurent.jpg"
+ },
+ {
+  "id": "ha-ma",
+  "name": "Hà mã",
+  "group": "thu",
+  "title": "File:Hippopotamus amphibius Whipsnade Zoo.jpg"
+ },
+ {
+  "id": "cay-meerkat",
+  "name": "Cầy meerkat",
+  "group": "thu",
+  "title": "File:Meerkat (Suricata suricatta) Tswalu.jpg"
+ },
+ {
+  "id": "gau-koala",
+  "name": "Gấu koala",
+  "group": "thu",
+  "title": "File:Koala in Zoo Duisburg.jpg"
+ },
+ {
+  "id": "dai-bang",
+  "name": "Đại bàng đầu trắng non",
+  "group": "chim",
+  "title": "File:Juvenile Bald Eagle (head).jpg"
+ },
+ {
+  "id": "cu-tuyet",
+  "name": "Cú tuyết",
+  "group": "chim",
+  "title": "File:Búho nival (Bubo scandiacus), Arcos de la Frontera, Cádiz, España, 2015-12-08, DD 03.JPG"
+ },
+ {
+  "id": "boi-ca",
+  "name": "Chim bói cá",
+  "group": "chim",
+  "title": "File:Alcedo atthis - Riserve naturali e aree contigue della fascia fluviale del Po.jpg"
+ },
+ {
+  "id": "hong-hac",
+  "name": "Hồng hạc",
+  "group": "chim",
+  "title": "File:Phoenicopterus ruber in São Paulo Zoo.jpg"
+ },
+ {
+  "id": "cong",
+  "name": "Chim công",
+  "group": "chim",
+  "title": "File:Paonroue.JPG"
+ },
+ {
+  "id": "vet-macaw",
+  "name": "Vẹt đuôi dài",
+  "group": "chim",
+  "title": "File:Red-and-green macaw (Ara chloropterus) juvenile.JPG"
+ },
+ {
+  "id": "chim-canh-cut",
+  "name": "Chim cánh cụt vua",
+  "group": "chim",
+  "title": "File:King penguin Aptenodytes patagonicus-4932.jpg"
+ },
+ {
+  "id": "chim-ruoi",
+  "name": "Chim ruồi",
+  "group": "chim",
+  "title": "File:Vervain hummingbird (Mellisuga minima).jpg"
+ },
+ {
+  "id": "diec-xam",
+  "name": "Diệc xám",
+  "group": "chim",
+  "title": "File:Ardea cinerea Luc Viatour.jpg"
+ },
+ {
+  "id": "thien-nga",
+  "name": "Thiên nga",
+  "group": "chim",
+  "title": "File:Mute swans (Cygnus olor) and cygnets.jpg"
+ },
+ {
+  "id": "chim-toucan",
+  "name": "Chim toucan",
+  "group": "chim",
+  "title": "File:006 Toco toucan in Encontro das Águas State Park Photo by Giles Laurent.jpg"
+ },
+ {
+  "id": "hai-anh",
+  "name": "Hải âu cổ rụt",
+  "group": "chim",
+  "title": "File:Papageitaucher Fratercula arctica.jpg"
+ },
+ {
+  "id": "tac-ke-hoa",
+  "name": "Tắc kè hoa sừng ngắn",
+  "group": "bosat",
+  "title": "File:Short-horned chameleon (Calumma brevicorne) female Andasibe.jpg"
+ },
+ {
+  "id": "ca-sau",
+  "name": "Cá sấu",
+  "group": "bosat",
+  "title": "File:Crocodylus acutus in La Manzanilla.jpg"
+ },
+ {
+  "id": "rua-bien",
+  "name": "Rùa biển xanh",
+  "group": "bosat",
+  "title": "File:Total internal reflection of Chelonia mydas.jpg"
+ },
+ {
+  "id": "ech-mat-do",
+  "name": "Ếch cây mắt đỏ",
+  "group": "bosat",
+  "title": "File:Red eyed tree frog edit2.jpg"
+ },
+ {
+  "id": "tran-xanh",
+  "name": "Trăn cây xanh",
+  "group": "bosat",
+  "title": "File:Green Tree Python 0A2A0428.jpg"
+ },
+ {
+  "id": "ky-nhong",
+  "name": "Kỳ nhông",
+  "group": "bosat",
+  "title": "File:Iguana V.jpg"
+ },
+ {
+  "id": "ca-heo",
+  "name": "Cá heo",
+  "group": "nuoc",
+  "title": "File:Tursiops truncatus 01.jpg"
+ },
+ {
+  "id": "ca-voi",
+  "name": "Cá voi lưng gù",
+  "group": "nuoc",
+  "title": "File:Humpback whale (Megaptera novaeangliae) calf Moorea 2.jpg"
+ },
+ {
+  "id": "ca-he",
+  "name": "Cá hề",
+  "group": "nuoc",
+  "title": "File:Amphiprion ocellaris (Clown anemonefish) by Nick Hobgood.jpg"
+ },
+ {
+  "id": "sua",
+  "name": "Sứa bờm sư tử",
+  "group": "nuoc",
+  "title": "File:Lion's mane jellyfish in Gullmarn fjord at Sämstad 8.jpg"
+ },
+ {
+  "id": "bach-tuoc",
+  "name": "Bạch tuộc",
+  "group": "nuoc",
+  "title": "File:Octopus vulgaris 03.jpg"
+ },
+ {
+  "id": "hai-cau",
+  "name": "Hải cẩu",
+  "group": "nuoc",
+  "title": "File:Harbor seal (Phoca vitulina) at Magdalen fjord, Svalbard (1).jpg"
+ },
+ {
+  "id": "rai-ca-bien",
+  "name": "Rái cá biển",
+  "group": "nuoc",
+  "title": "File:Sea-otter-morro-bay 13.jpg"
+ },
+ {
+  "id": "buom",
+  "name": "Bướm phượng",
+  "group": "contrung",
+  "title": "File:Papilio machaon Mitterbach 01.jpg"
+ },
+ {
+  "id": "chuon-chuon",
+  "name": "Chuồn chuồn đỏ",
+  "group": "contrung",
+  "title": "File:Sympetrum flaveolum - side (aka).jpg"
+ },
+ {
+  "id": "bo-rua",
+  "name": "Bọ rùa bảy chấm",
+  "group": "contrung",
+  "title": "File:Siebenpunkt-Marienkäfer (Coccinella septempunctata) auf Blüte im FFH-Gebiet \"Viernheimer Waldheide und angrenzende Flächen\".jpg"
+ },
+ {
+  "id": "ong-mat",
+  "name": "Ong mật",
+  "group": "contrung",
+  "title": "File:Apis mellifera - Senecio paludosus - Keila.jpg"
+ },
+ {
+  "id": "bo-ngua",
+  "name": "Bọ ngựa",
+  "group": "contrung",
+  "title": "File:European praying mantis (Mantis religiosa) green female Dobruja.jpg"
+ }
+]

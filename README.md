@@ -8,6 +8,15 @@ Tranh ghép sơn mài và tangram cho iPad, tối ưu cho Apple Pencil. Ứng d�
 - Mảnh có răng cưa sinh ngẫu nhiên. Đặt gần đúng chỗ thì mảnh tự hút vào, các mảnh khớp nhau dính thành cụm.
 - Có các công cụ: lọc mảnh viền, ảnh mờ làm nền, dồn mảnh, gợi ý.
 
+**Ảnh động vật.** Gồm 50 ảnh chụp động vật thật, chia nhóm: 20 thú, 12 chim, 6 bò sát và lưỡng cư, 7 động vật dưới nước, 5 côn trùng. Mọi ảnh đều lấy từ bộ ảnh chọn lọc (Featured / Quality pictures) của Wikimedia Commons, dùng theo giấy phép tự do và có ghi tên tác giả trong game. Mỗi ảnh tự chọn 12, 35, 70, 108 hoặc 154 mảnh, có công tắc xoay mảnh.
+
+Muốn đổi hoặc thêm ảnh thì sửa `scripts/animals/species.json` và `selection.json`, rồi chạy:
+
+```bash
+NODE_USE_ENV_PROXY=1 node scripts/animals/candidates.mjs   # tìm ảnh ứng viên trên Commons
+NODE_USE_ENV_PROXY=1 node scripts/animals/build.mjs        # tải, cắt 4:3, nén WebP, sinh manifest
+```
+
 **Tangram.** Gồm 24 hình bóng chia 3 bậc:
 - Nhập môn: hiện sẵn đường chia mảnh.
 - Thành thạo: chỉ còn đường viền.

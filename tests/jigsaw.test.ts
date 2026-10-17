@@ -135,3 +135,19 @@ describe('engine', () => {
     }
   });
 });
+
+import { existsSync } from 'node:fs';
+import manifest from '../src/photos/manifest.json';
+
+describe('animal photos', () => {
+  it('has 50 credited photos with board and thumbnail files', () => {
+    expect(manifest.length).toBe(50);
+    expect(new Set(manifest.map((p) => p.id)).size).toBe(50);
+    for (const p of manifest) {
+      expect(p.credit.license).toMatch(/CC|Public domain/);
+      expect(p.credit.source).toMatch(/^https:\/\/commons\.wikimedia\.org\//);
+      expect(existsSync(`public/photos/${p.id}.webp`)).toBe(true);
+      expect(existsSync(`public/photos/${p.id}-t.webp`)).toBe(true);
+    }
+  });
+});

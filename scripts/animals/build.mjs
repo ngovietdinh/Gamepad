@@ -11,6 +11,18 @@ const root = new URL('../../', import.meta.url);
 const selection = JSON.parse(readFileSync(new URL('./selection.json', import.meta.url), 'utf8'));
 const candidates = JSON.parse(readFileSync(new URL('./candidates.json', import.meta.url), 'utf8'));
 const byTitle = new Map(Object.values(candidates).flat().map((c) => [c.title, c]));
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+async function get(url) {
+  for (let i = 0; i < 8; i++) {
+    const r = await fetch(url, { headers: { 'User-Agent': UA } });
+    if (r.status === 429) {
+      await sleep(5000 * (i + 1));
+      continue;
+    }
+    return r;
+  }
+  throw new Error('rate limited ' + url);
+}
 mkdirSync(new URL('public/photos/', root), { recursive: true });
 mkdirSync(new URL('src/photos/', root), { recursive: true });
 
@@ -21,10 +33,12 @@ for (const s of selection) {
   const out = new URL(`public/photos/${s.id}.webp`, root);
   const thumb = new URL(`public/photos/${s.id}-t.webp`, root);
   if (!existsSync(out) || !existsSync(thumb)) {
-    // Ask for a 2400px rendition so the 4:3 crop still has 1600px of detail.
-    const url = c.thumb.replace(/\/\d+px-/, '/2400px-');
-    let r = await fetch(url, { headers: { 'User-Agent': UA } });
-    if (!r.ok) r = await fetch(c.thumb, { headers: { 'User-Agent': UA } });
+    // 1920px is a standard Wikimedia thumbnail size (already cached, fewer throttles).
+    // Thumbnails are served from upload.wikimedia.org too; strip tracking params.
+    const src = c.thumb.replace('thumb.wikimedia.org', 'upload.wikimedia.org').replace(/\?.*/, '');
+    const url = src.replace(/\/\d+px-/, '/1920px-');
+    let r = await get(url);
+    if (!r.ok) r = await get(src.replace(/\/\d+px-/, '/1280px-'));
     if (!r.ok) throw new Error(`${s.id}: HTTP ${r.status}`);
     const buf = Buffer.from(await r.arrayBuffer());
     const pos = s.focus ?? 'attention';
@@ -32,6 +46,7 @@ for (const s of selection) {
     await base.clone().webp({ quality: 82 }).toFile(out.pathname);
     await base.clone().resize(480, 360).webp({ quality: 74 }).toFile(thumb.pathname);
     console.log('ok', s.id);
+    await sleep(1500);
   }
   manifest.push({
     id: s.id,

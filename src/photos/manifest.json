@@ -1,1 +1,502 @@
-[]
+[
+ {
+  "id": "ho",
+  "name": "Hổ",
+  "group": "thu",
+  "credit": {
+   "artist": "Hans Stieglitz",
+   "license": "CC BY-SA 3.0",
+   "source": "https://commons.wikimedia.org/wiki/File:Tiger-2.jpg"
+  }
+ },
+ {
+  "id": "su-tu",
+  "name": "Sư tử",
+  "group": "thu",
+  "credit": {
+   "artist": "Giles Laurent",
+   "license": "CC BY-SA 4.0",
+   "source": "https://commons.wikimedia.org/wiki/File:002_The_lion_king_Snyggve_in_the_Serengeti_National_Park_Photo_by_Giles_Laurent.jpg"
+  }
+ },
+ {
+  "id": "bao-hoa-mai",
+  "name": "Báo hoa mai",
+  "group": "thu",
+  "credit": {
+   "artist": "Giles Laurent",
+   "license": "CC BY-SA 4.0",
+   "source": "https://commons.wikimedia.org/wiki/File:001_Juvenile_leopard_in_the_Serengeti_National_Park_Photo_by_Giles_Laurent.jpg"
+  }
+ },
+ {
+  "id": "bao-san",
+  "name": "Báo săn",
+  "group": "thu",
+  "credit": {
+   "artist": "Charles J. Sharp",
+   "license": "CC BY-SA 4.0",
+   "source": "https://commons.wikimedia.org/wiki/File:Cheetah_(Acinonyx_jubatus)_female_2.jpg"
+  }
+ },
+ {
+  "id": "voi",
+  "name": "Voi châu Phi",
+  "group": "thu",
+  "credit": {
+   "artist": "Diego Delso",
+   "license": "CC BY-SA 4.0",
+   "source": "https://commons.wikimedia.org/wiki/File:Elefante_africano_de_sabana_(Loxodonta_africana),_parque_nacional_Kruger,_Sud%C3%A1frica,_2018-07-25,_DD_06.jpg"
+  }
+ },
+ {
+  "id": "huou-cao-co",
+  "name": "Hươu cao cổ",
+  "group": "thu",
+  "credit": {
+   "artist": "Byrdyak",
+   "license": "CC BY-SA 4.0",
+   "source": "https://commons.wikimedia.org/wiki/File:Three_giraffes_01.jpg"
+  }
+ },
+ {
+  "id": "ngua-van",
+  "name": "Ngựa vằn",
+  "group": "thu",
+  "credit": {
+   "artist": "Charles J. Sharp",
+   "license": "CC BY-SA 4.0",
+   "source": "https://commons.wikimedia.org/wiki/File:Plains_zebras_(Equus_quagga)_Maputo.jpg"
+  }
+ },
+ {
+  "id": "gau-nau",
+  "name": "Gấu nâu",
+  "group": "thu",
+  "credit": {
+   "artist": "Byrdyak",
+   "license": "CC BY 4.0",
+   "source": "https://commons.wikimedia.org/wiki/File:%D0%92%D0%B5%D0%B4%D0%BC%D1%96%D0%B4%D1%8C_%D1%83_%D0%BB%D1%96%D1%81%D1%96.jpg"
+  }
+ },
+ {
+  "id": "gau-bac-cuc",
+  "name": "Gấu Bắc Cực",
+  "group": "thu",
+  "credit": {
+   "artist": "AWeith",
+   "license": "CC BY-SA 4.0",
+   "source": "https://commons.wikimedia.org/wiki/File:Polar_bear_(Ursus)_maritimus_female_with_its_cub,_Svalbard_(2).jpg"
+  }
+ },
+ {
+  "id": "gau-truc-do",
+  "name": "Gấu trúc đỏ",
+  "group": "thu",
+  "credit": {
+   "artist": "Mathias Appel",
+   "license": "CC0",
+   "source": "https://commons.wikimedia.org/wiki/File:Red_Panda_(24986761703).jpg"
+  }
+ },
+ {
+  "id": "soi",
+  "name": "Sói xám",
+  "group": "thu",
+  "credit": {
+   "artist": "Malene Thyssen",
+   "license": "CC BY-SA 3.0",
+   "source": "https://commons.wikimedia.org/wiki/File:Scandinavian_grey_wolf_Canis_lupus.jpg"
+  }
+ },
+ {
+  "id": "cao-do",
+  "name": "Cáo đỏ",
+  "group": "thu",
+  "credit": {
+   "artist": "ClaudiaTen",
+   "license": "CC BY-SA 4.0",
+   "source": "https://commons.wikimedia.org/wiki/File:Portrait_of_a_red_fox_in_Rautas_fj%C3%A4llurskog.jpg"
+  }
+ },
+ {
+  "id": "khi-dot",
+  "name": "Khỉ đột núi",
+  "group": "thu",
+  "credit": {
+   "artist": "Charles J. Sharp",
+   "license": "CC BY-SA 4.0",
+   "source": "https://commons.wikimedia.org/wiki/File:Mountain_gorilla_(Gorilla_beringei_beringei)_female_2.jpg"
+  }
+ },
+ {
+  "id": "duoi-uoi",
+  "name": "Đười ươi Sumatra",
+  "group": "thu",
+  "credit": {
+   "artist": "H. Zell",
+   "license": "CC BY-SA 3.0",
+   "source": "https://commons.wikimedia.org/wiki/File:Pongo_abelii_-_Tierpark_Hagenbeck_01.jpg"
+  }
+ },
+ {
+  "id": "huou-do",
+  "name": "Hươu đỏ",
+  "group": "thu",
+  "credit": {
+   "artist": "derivative work: Massimo Catarinella (talk) Red_deer_stag.jpg: Mehmet Karatay",
+   "license": "CC BY-SA 3.0",
+   "source": "https://commons.wikimedia.org/wiki/File:RedDeerStag.jpg"
+  }
+ },
+ {
+  "id": "soc-do",
+  "name": "Sóc đỏ",
+  "group": "thu",
+  "credit": {
+   "artist": "Rhododendrites",
+   "license": "CC BY-SA 4.0",
+   "source": "https://commons.wikimedia.org/wiki/File:Red_squirrel_(21808).jpg"
+  }
+ },
+ {
+  "id": "te-giac",
+  "name": "Tê giác",
+  "group": "thu",
+  "credit": {
+   "artist": "Giles Laurent",
+   "license": "CC BY-SA 4.0",
+   "source": "https://commons.wikimedia.org/wiki/File:075_White_rhinoceros_mother_and_her_newborn_baby_in_the_Kalahari_Desert_of_Namibia_Photo_by_Giles_Laurent.jpg"
+  }
+ },
+ {
+  "id": "ha-ma",
+  "name": "Hà mã",
+  "group": "thu",
+  "credit": {
+   "artist": "William Warby",
+   "license": "CC BY 2.0",
+   "source": "https://commons.wikimedia.org/wiki/File:Hippopotamus_amphibius_Whipsnade_Zoo.jpg"
+  }
+ },
+ {
+  "id": "cay-meerkat",
+  "name": "Cầy meerkat",
+  "group": "thu",
+  "credit": {
+   "artist": "Charles J. Sharp",
+   "license": "CC BY-SA 4.0",
+   "source": "https://commons.wikimedia.org/wiki/File:Meerkat_(Suricata_suricatta)_Tswalu.jpg"
+  }
+ },
+ {
+  "id": "gau-koala",
+  "name": "Gấu koala",
+  "group": "thu",
+  "credit": {
+   "artist": "Till Niermann",
+   "license": "CC BY 3.0",
+   "source": "https://commons.wikimedia.org/wiki/File:Koala_in_Zoo_Duisburg.jpg"
+  }
+ },
+ {
+  "id": "dai-bang",
+  "name": "Đại bàng đầu trắng non",
+  "group": "chim",
+  "credit": {
+   "artist": "Michael Gäbler",
+   "license": "CC BY 3.0",
+   "source": "https://commons.wikimedia.org/wiki/File:Juvenile_Bald_Eagle_(head).jpg"
+  }
+ },
+ {
+  "id": "cu-tuyet",
+  "name": "Cú tuyết",
+  "group": "chim",
+  "credit": {
+   "artist": "Diego Delso",
+   "license": "CC BY-SA 4.0",
+   "source": "https://commons.wikimedia.org/wiki/File:B%C3%BAho_nival_(Bubo_scandiacus),_Arcos_de_la_Frontera,_C%C3%A1diz,_Espa%C3%B1a,_2015-12-08,_DD_03.JPG"
+  }
+ },
+ {
+  "id": "boi-ca",
+  "name": "Chim bói cá",
+  "group": "chim",
+  "credit": {
+   "artist": "Luca Casale",
+   "license": "CC BY-SA 4.0",
+   "source": "https://commons.wikimedia.org/wiki/File:Alcedo_atthis_-_Riserve_naturali_e_aree_contigue_della_fascia_fluviale_del_Po.jpg"
+  }
+ },
+ {
+  "id": "hong-hac",
+  "name": "Hồng hạc",
+  "group": "chim",
+  "credit": {
+   "artist": "Wilfredor",
+   "license": "CC0",
+   "source": "https://commons.wikimedia.org/wiki/File:Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg"
+  }
+ },
+ {
+  "id": "cong",
+  "name": "Chim công",
+  "group": "chim",
+  "credit": {
+   "artist": "Jebulon",
+   "license": "CC BY-SA 3.0",
+   "source": "https://commons.wikimedia.org/wiki/File:Paonroue.JPG"
+  }
+ },
+ {
+  "id": "vet-macaw",
+  "name": "Vẹt đuôi dài",
+  "group": "chim",
+  "credit": {
+   "artist": "Charles J. Sharp",
+   "license": "CC BY-SA 4.0",
+   "source": "https://commons.wikimedia.org/wiki/File:Red-and-green_macaw_(Ara_chloropterus)_juvenile.JPG"
+  }
+ },
+ {
+  "id": "chim-canh-cut",
+  "name": "Chim cánh cụt vua",
+  "group": "chim",
+  "credit": {
+   "artist": "Isiwal",
+   "license": "CC BY-SA 4.0",
+   "source": "https://commons.wikimedia.org/wiki/File:King_penguin_Aptenodytes_patagonicus-4932.jpg"
+  }
+ },
+ {
+  "id": "chim-ruoi",
+  "name": "Chim ruồi",
+  "group": "chim",
+  "credit": {
+   "artist": "Charles J. Sharp",
+   "license": "CC BY-SA 4.0",
+   "source": "https://commons.wikimedia.org/wiki/File:Vervain_hummingbird_(Mellisuga_minima).jpg"
+  }
+ },
+ {
+  "id": "diec-xam",
+  "name": "Diệc xám",
+  "group": "chim",
+  "credit": {
+   "artist": "Luc Viatour",
+   "license": "CC BY-SA 3.0",
+   "source": "https://commons.wikimedia.org/wiki/File:Ardea_cinerea_Luc_Viatour.jpg"
+  }
+ },
+ {
+  "id": "thien-nga",
+  "name": "Thiên nga",
+  "group": "chim",
+  "credit": {
+   "artist": "Charles J. Sharp",
+   "license": "CC BY-SA 4.0",
+   "source": "https://commons.wikimedia.org/wiki/File:Mute_swans_(Cygnus_olor)_and_cygnets.jpg"
+  }
+ },
+ {
+  "id": "chim-toucan",
+  "name": "Chim toucan",
+  "group": "chim",
+  "credit": {
+   "artist": "Giles Laurent",
+   "license": "CC BY-SA 4.0",
+   "source": "https://commons.wikimedia.org/wiki/File:006_Toco_toucan_in_Encontro_das_%C3%81guas_State_Park_Photo_by_Giles_Laurent.jpg"
+  }
+ },
+ {
+  "id": "hai-anh",
+  "name": "Hải âu cổ rụt",
+  "group": "chim",
+  "credit": {
+   "artist": "Richard Bartz",
+   "license": "CC BY-SA 3.0",
+   "source": "https://commons.wikimedia.org/wiki/File:Papageitaucher_Fratercula_arctica.jpg"
+  }
+ },
+ {
+  "id": "tac-ke-hoa",
+  "name": "Tắc kè hoa sừng ngắn",
+  "group": "bosat",
+  "credit": {
+   "artist": "Charles J. Sharp",
+   "license": "CC BY-SA 4.0",
+   "source": "https://commons.wikimedia.org/wiki/File:Short-horned_chameleon_(Calumma_brevicorne)_female_Andasibe.jpg"
+  }
+ },
+ {
+  "id": "ca-sau",
+  "name": "Cá sấu",
+  "group": "bosat",
+  "credit": {
+   "artist": "Tomas Castelazo",
+   "license": "CC0",
+   "source": "https://commons.wikimedia.org/wiki/File:Crocodylus_acutus_in_La_Manzanilla.jpg"
+  }
+ },
+ {
+  "id": "rua-bien",
+  "name": "Rùa biển xanh",
+  "group": "bosat",
+  "credit": {
+   "artist": "Brocken Inaglory",
+   "license": "CC BY-SA 4.0",
+   "source": "https://commons.wikimedia.org/wiki/File:Total_internal_reflection_of_Chelonia_mydas.jpg"
+  }
+ },
+ {
+  "id": "ech-mat-do",
+  "name": "Ếch cây mắt đỏ",
+  "group": "bosat",
+  "credit": {
+   "artist": "Careyjamesbalboa (Carey James Balboa)",
+   "license": "Public domain",
+   "source": "https://commons.wikimedia.org/wiki/File:Red_eyed_tree_frog_edit2.jpg"
+  }
+ },
+ {
+  "id": "tran-xanh",
+  "name": "Trăn cây xanh",
+  "group": "bosat",
+  "credit": {
+   "artist": "JJ Harrison",
+   "license": "CC BY-SA 3.0",
+   "source": "https://commons.wikimedia.org/wiki/File:Green_Tree_Python_0A2A0428.jpg"
+  }
+ },
+ {
+  "id": "ky-nhong",
+  "name": "Kỳ nhông",
+  "group": "bosat",
+  "credit": {
+   "artist": "Rjcastillo",
+   "license": "CC BY-SA 3.0",
+   "source": "https://commons.wikimedia.org/wiki/File:Iguana_V.jpg"
+  }
+ },
+ {
+  "id": "ca-heo",
+  "name": "Cá heo",
+  "group": "nuoc",
+  "credit": {
+   "artist": "NASA",
+   "license": "Public domain",
+   "source": "https://commons.wikimedia.org/wiki/File:Tursiops_truncatus_01.jpg"
+  }
+ },
+ {
+  "id": "ca-voi",
+  "name": "Cá voi lưng gù",
+  "group": "nuoc",
+  "credit": {
+   "artist": "Charles J. Sharp",
+   "license": "CC BY-SA 4.0",
+   "source": "https://commons.wikimedia.org/wiki/File:Humpback_whale_(Megaptera_novaeangliae)_calf_Moorea_2.jpg"
+  }
+ },
+ {
+  "id": "ca-he",
+  "name": "Cá hề",
+  "group": "nuoc",
+  "credit": {
+   "artist": "Nick Hobgood",
+   "license": "CC BY-SA 3.0",
+   "source": "https://commons.wikimedia.org/wiki/File:Amphiprion_ocellaris_(Clown_anemonefish)_by_Nick_Hobgood.jpg"
+  }
+ },
+ {
+  "id": "sua",
+  "name": "Sứa bờm sư tử",
+  "group": "nuoc",
+  "credit": {
+   "artist": "W.carter",
+   "license": "CC0",
+   "source": "https://commons.wikimedia.org/wiki/File:Lion%27s_mane_jellyfish_in_Gullmarn_fjord_at_S%C3%A4mstad_8.jpg"
+  }
+ },
+ {
+  "id": "bach-tuoc",
+  "name": "Bạch tuộc",
+  "group": "nuoc",
+  "credit": {
+   "artist": "H. Zell",
+   "license": "CC BY-SA 3.0",
+   "source": "https://commons.wikimedia.org/wiki/File:Octopus_vulgaris_03.jpg"
+  }
+ },
+ {
+  "id": "hai-cau",
+  "name": "Hải cẩu",
+  "group": "nuoc",
+  "credit": {
+   "artist": "AWeith",
+   "license": "CC BY-SA 4.0",
+   "source": "https://commons.wikimedia.org/wiki/File:Harbor_seal_(Phoca_vitulina)_at_Magdalen_fjord,_Svalbard_(1).jpg"
+  }
+ },
+ {
+  "id": "rai-ca-bien",
+  "name": "Rái cá biển",
+  "group": "nuoc",
+  "credit": {
+   "artist": "Mike Baird from Morro Bay, USA (bairdphotos.com)",
+   "license": "CC BY 2.0",
+   "source": "https://commons.wikimedia.org/wiki/File:Sea-otter-morro-bay_13.jpg"
+  }
+ },
+ {
+  "id": "buom",
+  "name": "Bướm phượng",
+  "group": "contrung",
+  "credit": {
+   "artist": "Uoaei1",
+   "license": "CC BY-SA 4.0",
+   "source": "https://commons.wikimedia.org/wiki/File:Papilio_machaon_Mitterbach_01.jpg"
+  }
+ },
+ {
+  "id": "chuon-chuon",
+  "name": "Chuồn chuồn đỏ",
+  "group": "contrung",
+  "credit": {
+   "artist": "André Karwath aka Aka",
+   "license": "CC BY-SA 2.5",
+   "source": "https://commons.wikimedia.org/wiki/File:Sympetrum_flaveolum_-_side_(aka).jpg"
+  }
+ },
+ {
+  "id": "bo-rua",
+  "name": "Bọ rùa bảy chấm",
+  "group": "contrung",
+  "credit": {
+   "artist": "Stephan Sprinz",
+   "license": "CC BY 4.0",
+   "source": "https://commons.wikimedia.org/wiki/File:Siebenpunkt-Marienk%C3%A4fer_(Coccinella_septempunctata)_auf_Bl%C3%BCte_im_FFH-Gebiet_%22Viernheimer_Waldheide_und_angrenzende_Fl%C3%A4chen%22.jpg"
+  }
+ },
+ {
+  "id": "ong-mat",
+  "name": "Ong mật",
+  "group": "contrung",
+  "credit": {
+   "artist": "Ivar Leidus",
+   "license": "CC BY-SA 4.0",
+   "source": "https://commons.wikimedia.org/wiki/File:Apis_mellifera_-_Senecio_paludosus_-_Keila.jpg"
+  }
+ },
+ {
+  "id": "bo-ngua",
+  "name": "Bọ ngựa",
+  "group": "contrung",
+  "credit": {
+   "artist": "Charles J. Sharp",
+   "license": "CC BY-SA 4.0",
+   "source": "https://commons.wikimedia.org/wiki/File:European_praying_mantis_(Mantis_religiosa)_green_female_Dobruja.jpg"
+  }
+ }
+]
