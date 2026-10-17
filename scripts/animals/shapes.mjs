@@ -234,3 +234,15 @@ for (const p of manifest) {
   );
   console.log(p.id.padEnd(14), 'loops', polys.length, 'pts', polys.reduce((s, q) => s + q.length / 2, 0), 'bbox', bbox.join(','), 'fill', (filled / (bbox[2] * bbox[3])).toFixed(2));
 }
+
+// Content revision per photo: the app appends it to image URLs so a changed
+// photo is never served from an old cache entry under the same file name.
+for (const p of manifest) {
+  const h = createHash('sha1');
+  for (const f of [`${p.id}.webp`, `${p.id}-s.webp`]) {
+    const file = new URL(`public/photos/${f}`, root);
+    if (existsSync(file)) h.update(readFileSync(file));
+  }
+  p.rev = h.digest('hex').slice(0, 10);
+}
+writeFileSync(new URL('src/photos/manifest.json', root), JSON.stringify(manifest, null, 1));

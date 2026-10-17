@@ -30,7 +30,7 @@ export default defineConfig({
             urlPattern: ({ url }) => url.pathname.startsWith('/photos/') && url.pathname.endsWith('.webp'),
             handler: 'CacheFirst',
             options: {
-              cacheName: 'photos',
+              cacheName: 'photos-v2',
               expiration: { maxEntries: 80 },
             },
           },

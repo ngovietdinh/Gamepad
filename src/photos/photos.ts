@@ -10,6 +10,8 @@ export interface Photo {
   /** A clean silhouette exists, so the photo can be played in the animal's shape. */
   shape?: boolean;
   credit: { artist: string; license: string; source: string };
+  /** Content revision of the images, added to their URLs to bypass stale caches. */
+  rev?: string;
 }
 
 /** Real wildlife photographs from Wikimedia Commons, bundled with the app. */
@@ -37,10 +39,11 @@ export type PhotoSize = (typeof PHOTO_SIZES)[number];
 export const photoId = (p: Photo, s: PhotoSize, rotation: boolean, shaped = false) =>
   `p:${p.id}:${s.cols * s.rows}:${rotation ? 1 : 0}${shaped ? ':s' : ''}`;
 
-export const photoUrl = (p: Photo) => `${import.meta.env.BASE_URL}photos/${p.id}.webp`;
+const revQuery = (p: Photo) => (p.rev ? `?v=${p.rev}` : '');
+export const photoUrl = (p: Photo) => `${import.meta.env.BASE_URL}photos/${p.id}.webp${revQuery(p)}`;
 export const thumbUrl = (p: Photo) => `${import.meta.env.BASE_URL}photos/${p.id}-t.webp`;
 /** Sharp crop around the animal, used by shaped puzzles. */
-export const cutoutUrl = (p: Photo) => `${import.meta.env.BASE_URL}photos/${p.id}-s.webp`;
+export const cutoutUrl = (p: Photo) => `${import.meta.env.BASE_URL}photos/${p.id}-s.webp${revQuery(p)}`;
 
 export interface PhotoShape {
   /** Silhouette bounding box and crop (with margin) in 1200×900 frame units. */

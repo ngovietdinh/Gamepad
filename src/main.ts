@@ -20,6 +20,8 @@ router.render();
 
 // Offline support: the service worker caches the whole app.
 if (import.meta.env.PROD) registerSW({ immediate: true });
+// Photos used to be cached by bare file name, which kept serving replaced images.
+if ('caches' in window) caches.delete('photos').catch(() => {});
 
 // iOS Safari: stop double-tap zoom and pinch zoom on UI chrome.
 document.addEventListener('dblclick', (e) => e.preventDefault(), { passive: false });
